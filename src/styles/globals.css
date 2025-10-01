@@ -1,0 +1,35 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto&display=swap");
+
+body {
+  --primary-50: #e3f2f9;
+  --primary-100: #c4e3f1;
+  --primary-200: #a5d3e9;
+  --primary-300: #7db7e0;
+  --primary-400: #5ba2d7;
+  --primary-500: #0d69b2; /* Primary Color */
+  --primary-600: #0b609f;
+  --primary-700: #0a548a;
+  --primary-800: #09467a;
+  --primary-900: #083b6b;
+
+  --success: #28a745;
+  --warning: #ffc107;
+  --danger: #dc3545;
+  --black: #000000;
+  --white: #ffffff;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  font-family: "Poppins", sans-serif;
+}
+
+.ant-menu-item {
+  display: flex;
+  align-items: center;
+}
+
+@import url("../features/navigation/components/sidebar/style.css");

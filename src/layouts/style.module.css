@@ -1,0 +1,36 @@
+.root {
+  display: flex;
+  justify-content: stretch;
+  flex-direction: column;
+  align-items: center;
+}
+
+.navbar {
+  position: fixed;
+  top: 0;
+  z-index: 5;
+  background-color: white;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  border-bottom: 1px solid #d9d9d9;
+}
+
+.ant-layout-sider-children {
+  position: relative;
+}
+
+.page-content {
+  width: 100%;
+  /* padding-bottom: 48px; */ /* Save for later */
+
+  /* to account navbar height */
+  padding-top: 65px;
+}
+
+/* Save for later */
+/* @media screen and (min-width: 768px) {
+  .page-content {
+    padding-top: 0px;
+  }
+} */

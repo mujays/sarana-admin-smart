@@ -1,0 +1,20 @@
+export type TKeluarga = {
+  id: number;
+  siswa_id: number;
+  nama: string;
+  hubungan: string;
+  pekerjaan: string;
+  jenis_kelamin: string;
+  nik: string;
+  ktp: string;
+  agama: string;
+  suku: string;
+  alamat: string;
+  gaji: string;
+  email: string;
+  tanggal_lahir: string;
+  pendidikan: string;
+  no_hp: string;
+  created_at: string;
+  updated_at: string;
+};

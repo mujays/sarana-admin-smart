@@ -1,0 +1,18 @@
+export const ROUTE_MAP: Record<string, string> = {
+  dashboard: "Dashboard",
+  type: "Tipe",
+  saldo: "Saldo",
+  alumni: "Alumni",
+  pindahan: "Siswa Pindahan",
+  tagihan: "Tagihan",
+  transaksi: "Transaksi",
+  jemputan: "Jemputan",
+  ppdb: "PPDB",
+  siswa: "Siswa",
+  tahunAjaran: "Tahun Ajaran",
+  kelas: "Kelas",
+  keluarga: "Keluarga",
+  penarikan: "Penarikan",
+  pengaturan: "Pengaturan",
+  wali: "Wali",
+};

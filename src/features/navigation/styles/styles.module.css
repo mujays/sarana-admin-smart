@@ -1,0 +1,43 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  background-color: white;
+  padding: 12px 14px;
+}
+
+@media screen and (min-width: 768px) {
+  .root {
+    flex-direction: row;
+  }
+}
+
+.nav-list {
+  list-style-type: none;
+  padding-left: 0;
+  margin-bottom: 0;
+}
+
+.nav-list > li {
+  display: inline-block;
+}
+
+.nav-list > li:not(:last-child) {
+  margin-right: 10px;
+}
+
+.nav-link {
+  color: black !important;
+  opacity: 0.6;
+}
+
+.nav-link-active {
+  opacity: 1;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: 700;
+  color: black !important;
+}
