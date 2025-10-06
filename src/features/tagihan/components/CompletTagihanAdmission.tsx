@@ -21,7 +21,7 @@ export function CompleteTagihanAdmission({
   async function handleComplete() {
     try {
       setIsLoading(true);
-      await TagihanService.updateAdmission({
+      await TagihanService.updateLunas({
         ids: [tagihan.id],
       });
       toast.success("Tagihan berhasil dilunasi!");
