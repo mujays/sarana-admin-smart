@@ -33,10 +33,10 @@ const TagihanService = {
     >(`/tagihan/${typeId}`, payload);
     return response.data;
   },
-  updateAdmission: async (typeId: number, payload: any) => {
-    const response = await axiosConfigFinance.put<
+  updateAdmission: async (payload: any) => {
+    const response = await axiosConfigFinance.post<
       BaseResponsePaginate<TTagihanAdmission>
-    >(`/uang-pangkal/${typeId}`, payload);
+    >(`/uang-pangkal/bulk-auto-lunas`, payload);
     return response.data;
   },
   getTrx: async (params?: any) => {

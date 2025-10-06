@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { TableProps, Tag, Typography } from "antd";
 import EditTagihanAdmission from "../components/EditTagihanAdmission";
 import { DeleteTagihanAdmission } from "../components/DeleteTagihanAdmission";
+import { CompleteTagihanAdmission } from "../components/CompletTagihanAdmission";
 
 type Props = {
   page: number;
@@ -106,6 +107,9 @@ function useListTagihanAdmission({ limit, page, siswaId }: Props) {
           <div key={record.id} className="flex gap-[8px]">
             <DeleteTagihanAdmission tagihanId={record.id} />
             <EditTagihanAdmission tagihanId={record.id} />
+            {record.status.toLowerCase() !== "belum lunas" ? null : (
+              <CompleteTagihanAdmission tagihan={record} />
+            )}
           </div>
         );
       },

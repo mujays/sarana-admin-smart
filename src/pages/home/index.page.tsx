@@ -5,6 +5,7 @@ import { storeToken, storeTokenKeuangan } from "@/libraries/auth";
 import AuthService from "@/services/auth";
 import { useQuery } from "@tanstack/react-query";
 import { Calendar, Modal, Typography } from "antd";
+import { BanknoteIcon, SquareUserIcon } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -135,78 +136,58 @@ function HomePage() {
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
           <div
-            className="relative rounded overflow-hidden flex flex-col w-full bg-white p-4 gap-4 cursor-pointer"
+            className="flex flex-col w-full bg-white p-4 gap-4 cursor-pointer"
             onClick={() => {
               setLoginTo("kesiswaan-sd");
               modal.onOpen();
             }}
           >
-            <div className="absolute top-0 bottom-0 left-0 w-2 bg-primary-500" />
-            <Image
-              alt="banner-kesiswaan"
-              src="/images/kesiswaan-portal.svg"
-              width={500}
-              height={300}
-              className="w-full h-full"
-            />
-            <p className="font-semibold text-xl text-black text-center">
+            <div className="bg-primary-500 flex justify-center items-center h-36 rounded-lg">
+              <SquareUserIcon className="text-white h-16 w-16" />
+            </div>
+            <p className="font-semibold text-xl text-center text-primary-500">
               Kesiswaan SD
             </p>
           </div>
           <div
-            className="relative rounded overflow-hidden flex flex-col w-full bg-white p-4 gap-4 cursor-pointer"
+            className="flex flex-col w-full bg-white p-4 gap-4 cursor-pointer"
             onClick={() => {
               setLoginTo("keuangan-sd");
               modal.onOpen();
             }}
           >
-            <div className="absolute top-0 bottom-0 left-0 w-2 bg-primary-500" />
-            <Image
-              alt="banner-keuangan"
-              src="/images/finance-portal.svg"
-              width={500}
-              height={300}
-              className="w-full h-full"
-            />
-            <p className="font-semibold text-xl text-black text-center">
+            <div className="bg-primary-500 flex justify-center items-center h-36 rounded-lg">
+              <BanknoteIcon className="text-white h-16 w-16" />
+            </div>
+            <p className="font-semibold text-xl text-center text-primary-500">
               Keuangan SD
             </p>
           </div>
           <div
-            className="relative rounded overflow-hidden flex flex-col w-full bg-white p-4 gap-4 cursor-pointer"
+            className="flex flex-col w-full bg-white p-4 gap-4 cursor-pointer"
             onClick={() => {
               setLoginTo("kesiswaan-smp");
               modal.onOpen();
             }}
           >
-            <div className="absolute top-0 bottom-0 left-0 w-2 bg-primary-500" />
-            <Image
-              alt="banner-kesiswaan"
-              src="/images/kesiswaan-portal.svg"
-              width={500}
-              height={300}
-              className="w-full h-full"
-            />
-            <p className="font-semibold text-xl text-black text-center">
+            <div className="bg-orange-500 flex justify-center items-center h-36 rounded-lg">
+              <SquareUserIcon className="text-white h-16 w-16" />
+            </div>
+            <p className="font-semibold text-xl text-center text-orange-500">
               Kesiswaan SMP
             </p>
           </div>
           <div
-            className="relative rounded overflow-hidden flex flex-col w-full bg-white p-4 gap-4 cursor-pointer"
+            className="flex flex-col w-full bg-white p-4 gap-4 cursor-pointer"
             onClick={() => {
               setLoginTo("keuangan-smp");
               modal.onOpen();
             }}
           >
-            <div className="absolute top-0 bottom-0 left-0 w-2 bg-primary-500" />
-            <Image
-              alt="banner-keuangan"
-              src="/images/finance-portal.svg"
-              width={500}
-              height={300}
-              className="w-full h-full"
-            />
-            <p className="font-semibold text-xl text-black text-center">
+            <div className="bg-orange-500 flex justify-center items-center h-36 rounded-lg">
+              <BanknoteIcon className="text-white h-16 w-16" />
+            </div>
+            <p className="font-semibold text-xl text-center text-orange-500">
               Keuangan SMP
             </p>
           </div>
