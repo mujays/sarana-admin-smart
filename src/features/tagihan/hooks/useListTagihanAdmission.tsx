@@ -7,6 +7,7 @@ import { TableProps, Tag, Typography } from "antd";
 import EditTagihanAdmission from "../components/EditTagihanAdmission";
 import { DeleteTagihanAdmission } from "../components/DeleteTagihanAdmission";
 import { CompleteTagihanAdmission } from "../components/CompletTagihanAdmission";
+import PaymentTagihanAdmission from "../components/PaymentTagihanAdmission";
 
 type Props = {
   page: number;
@@ -110,6 +111,7 @@ function useListTagihanAdmission({ limit, page, siswaId }: Props) {
             {record.status.toLowerCase() !== "belum lunas" ? null : (
               <CompleteTagihanAdmission tagihan={record} />
             )}
+            <PaymentTagihanAdmission tagihanId={record.id} />
           </div>
         );
       },

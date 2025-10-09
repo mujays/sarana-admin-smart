@@ -78,7 +78,9 @@ export function Invoices({
       undefined,
       "FAST",
     );
-    pdf.save(`${tagihan?.siswa.nama}-${tagihan?.siswa.nis}-${tagihan?.id}.pdf`);
+    pdf.save(
+      `${tagihan?.siswa?.nama}-${tagihan?.siswa.nis}-${tagihan?.id}.pdf`,
+    );
   }
 
   React.useEffect(() => {
@@ -154,11 +156,11 @@ export function Invoices({
                 </div>
                 <div className="flex gap-3">
                   <p className="w-[100px]">Nama</p>
-                  <p>: {tagihan?.siswa.nama}</p>
+                  <p>: {tagihan?.siswa?.nama}</p>
                 </div>
                 <div className="flex gap-3">
                   <p className="w-[100px]">Kelas</p>
-                  <p>: {tagihan?.siswa.kelas?.[0].nama || "-"}</p>
+                  <p>: {tagihan?.siswa?.kelas?.[0]?.nama || "-"}</p>
                 </div>
               </div>
               <div className="space-y-1">
@@ -224,7 +226,7 @@ export function Invoices({
 
             <p className="capitalize text-center">
               Jumlah : {formatCurrency(transactions.buyer_payment)} (
-              {numberToWordsID(transactions.buyer_payment)})
+              {numberToWordsID(transactions?.buyer_payment || 0)})
             </p>
 
             <div className="flex justify-around">
@@ -286,7 +288,7 @@ export function Invoices({
                 </div>
                 <div className="flex gap-3">
                   <p className="w-[100px]">Kelas</p>
-                  <p>: {tagihan?.siswa.kelas?.[0].nama || "-"}</p>
+                  <p>: {tagihan?.siswa.kelas?.[0]?.nama || "-"}</p>
                 </div>
               </div>
               <div className="space-y-1">
@@ -356,7 +358,7 @@ export function Invoices({
 
             <p className="capitalize text-center">
               Jumlah : {formatCurrency(transactions.buyer_payment)} (
-              {numberToWordsID(transactions.buyer_payment)})
+              {numberToWordsID(transactions?.buyer_payment || 0)})
             </p>
 
             <div className="flex justify-around">

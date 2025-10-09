@@ -73,6 +73,12 @@ const TagihanService = {
     >(`/transaction-uang-pangkal/${id}`, payload);
     return response.data;
   },
+  createTrxAdmission: async (payload: any) => {
+    const response = await axiosConfigFinance.post<
+      ResponseMockupDto<TTransactionAdmission>
+    >(`/transaction-uang-pangkal`, payload);
+    return response.data;
+  },
   get: async (params?: any) => {
     const response = await axiosConfigFinance.get<
       BaseResponsePaginate<TTagihan>

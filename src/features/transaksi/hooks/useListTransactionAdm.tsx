@@ -51,20 +51,20 @@ function useListTransaksiAdm({ limit, page }: Props) {
     {
       title: "Tagihan",
       dataIndex: "tagihan",
-      render: (value = "", record) => <p>{record.uang_pangkal.nama || "-"}</p>,
+      render: (value = "", record) => <p>{record.uang_pangkal?.nama || "-"}</p>,
     },
     {
       title: "Siswa",
       dataIndex: "siswa",
       render: (value = "", record) => (
-        <p>{record.uang_pangkal.siswa.nama || "-"}</p>
+        <p>{record.uang_pangkal?.siswa?.nama || "-"}</p>
       ),
     },
     {
       title: "Kelas",
       dataIndex: "kelas",
       render: (value = "", record) => (
-        <p>{record.uang_pangkal.siswa.kelas?.[0].nama || "-"}</p>
+        <p>{record.uang_pangkal?.siswa?.kelas?.[0]?.nama || "-"}</p>
       ),
     },
     // {
