@@ -23,7 +23,9 @@ export type TAuthenticatedNavbar = {
   activeLink:
     | "dashboard-keuangan"
     | "dashboard"
+    | "dashboard-perpustakaan"
     | "notification"
+    | "books"
     | "pengaturan"
     | "pindahan"
     | "penarikan"

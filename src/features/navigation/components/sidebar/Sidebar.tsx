@@ -7,6 +7,7 @@ import classNames from "classnames";
 import {
   Banknote,
   BanknoteIcon,
+  BookMarkedIcon,
   BusIcon,
   CalendarRangeIcon,
   CoinsIcon,
@@ -336,6 +337,30 @@ export const Sidebar = () => {
                     label: (
                       <Link href={`/${paths[1]}/keuangan/pengaturan`} passHref>
                         {ROUTE_MAP["pengaturan"]}
+                      </Link>
+                    ),
+                    style: menuItemStyle,
+                  },
+                ] as any)
+              : []),
+            ...(router?.asPath.includes("/perpustakaan")
+              ? ([
+                  {
+                    key: "dashboard-perpustakaan",
+                    icon: <DashboardIcon fill={"#FFFFFF"} />,
+                    label: (
+                      <Link href={`/perpustakaan`} passHref>
+                        {ROUTE_MAP["dashboard"]}
+                      </Link>
+                    ),
+                    style: menuItemStyle,
+                  },
+                  {
+                    key: "books",
+                    icon: <BookMarkedIcon />,
+                    label: (
+                      <Link href={`/perpustakaan/buku`} passHref>
+                        {ROUTE_MAP["buku"]}
                       </Link>
                     ),
                     style: menuItemStyle,

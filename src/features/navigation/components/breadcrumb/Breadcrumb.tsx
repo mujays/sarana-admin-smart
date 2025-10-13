@@ -7,8 +7,10 @@ import { Breadcrumb as _Breadcrumb } from "@/components/breadcrumb";
 
 export const Breadcrumb = ({
   items: overrideItems,
+  isAcademic = true,
 }: {
   items?: BreadcrumbProps["items"];
+  isAcademic?: boolean;
 }) => {
   const router = useRouter();
   const paths = router.pathname.split("/");
@@ -33,7 +35,7 @@ export const Breadcrumb = ({
       items={[
         {
           className: "!flex !items-center !gap-[4px] !text-blue-500 !pr-[0px]",
-          href: `/${paths[0]}/${paths[1]}`,
+          href: isAcademic ? `/${paths[0]}/${paths[1]}` : `/${paths[0]}`,
           title: (
             <>
               <DashboardIcon fill="#0d69b2" />
