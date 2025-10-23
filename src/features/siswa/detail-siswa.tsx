@@ -17,6 +17,7 @@ import Image from "next/image";
 import { Image as ImageAntd } from "antd";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
+import { formatCurrency } from "@/stores/utils";
 
 export default function DetailSiswa() {
   const router = useRouter();
@@ -375,7 +376,7 @@ export default function DetailSiswa() {
                                   {item.nama}
                                 </td>
                                 <td className="px-4 py-1 border pb-2">
-                                  {item.nama}
+                                  {item.jenis_kelamin}
                                 </td>
                                 <td className="px-4 py-1 border pb-2">
                                   {item.pendidikan}
@@ -466,8 +467,12 @@ export default function DetailSiswa() {
                         <td className="px-4 py-1 border">
                           Penghasilan per bulan
                         </td>
-                        <td className="px-4 py-1 border">{dataAyah?.gaji}</td>
-                        <td className="px-4 py-1 border">{dataIbu?.gaji}</td>
+                        <td className="px-4 py-1 border">
+                          {formatCurrency(+Number(dataAyah?.gaji) || 0)}
+                        </td>
+                        <td className="px-4 py-1 border">
+                          {formatCurrency(+Number(dataIbu?.gaji) || 0)}
+                        </td>
                       </tr>
                       <tr className="border-b hover:bg-gray-50">
                         <td className="px-4 py-1 border">Email</td>
@@ -491,7 +496,7 @@ export default function DetailSiswa() {
             >
               <div className="space-y-3">
                 <div className="bg-blue-500 text-center text-white !mt-0 pb-3">
-                  DATA CALON SISWA
+                  DATA SISWA
                 </div>
 
                 <div className="flex justify-between items-center text-xs gap-4">
@@ -636,13 +641,13 @@ export default function DetailSiswa() {
                                 key={index}
                                 className="border-b hover:bg-gray-50 pb-2"
                               >
-                                <td className="px-4 py-1 border pb-2">
+                                <td className="px-4 py-1 border !pb-4">
                                   {item.nama}
                                 </td>
-                                <td className="px-4 py-1 border pb-2">
-                                  {item.nama}
+                                <td className="px-4 py-1 border !pb-4">
+                                  {item.jenis_kelamin}
                                 </td>
-                                <td className="px-4 py-1 border pb-2">
+                                <td className="px-4 py-1 border !pb-4">
                                   {item.pendidikan}
                                 </td>
                               </tr>
@@ -665,84 +670,122 @@ export default function DetailSiswa() {
                     {/* Header */}
                     <thead className="bg-gray-100">
                       <tr>
-                        <th className="px-4 py-1 border text-left">
+                        <th className="px-4 py-1 border text-left !pb-4">
                           Identitas
                         </th>
-                        <th className="px-4 py-1 border text-left">Ayah</th>
-                        <th className="px-4 py-1 border text-left">Ibu</th>
+                        <th className="px-4 py-1 border text-left !pb-4">
+                          Ayah
+                        </th>
+                        <th className="px-4 py-1 border text-left !pb-4">
+                          Ibu
+                        </th>
                       </tr>
                     </thead>
 
                     {/* Body */}
                     <tbody>
                       <tr className="border-b hover:bg-gray-50">
-                        <td className="px-4 py-1 border">Nama</td>
-                        <td className="px-4 py-1 border">{dataAyah?.nama}</td>
-                        <td className="px-4 py-1 border">{dataIbu?.nama}</td>
+                        <td className="px-4 py-1 border !pb-4">Nama</td>
+                        <td className="px-4 py-1 border !pb-4">
+                          {dataAyah?.nama}
+                        </td>
+                        <td className="px-4 py-1 border !pb-4">
+                          {dataIbu?.nama}
+                        </td>
                       </tr>
                       <tr className="border-b hover:bg-gray-50">
-                        <td className="px-4 py-1 border">Tanggal Lahir</td>
-                        <td className="px-4 py-1 border">
+                        <td className="px-4 py-1 border !pb-4">
+                          Tanggal Lahir
+                        </td>
+                        <td className="px-4 py-1 border !pb-4">
                           {moment(dataAyah?.tanggal_lahir).format("DD/MM/YYYY")}
                         </td>
-                        <td className="px-4 py-1 border">
+                        <td className="px-4 py-1 border !pb-4">
                           {moment(dataIbu?.tanggal_lahir).format("DD/MM/YYYY")}
                         </td>
                       </tr>
                       <tr className="border-b hover:bg-gray-50">
-                        <td className="px-4 py-1 border">NIK</td>
-                        <td className="px-4 py-1 border">{dataAyah?.nik}</td>
-                        <td className="px-4 py-1 border">{dataIbu?.nik}</td>
+                        <td className="px-4 py-1 border !pb-4">NIK</td>
+                        <td className="px-4 py-1 border !pb-4">
+                          {dataAyah?.nik}
+                        </td>
+                        <td className="px-4 py-1 border !pb-4">
+                          {dataIbu?.nik}
+                        </td>
                       </tr>
                       <tr className="border-b hover:bg-gray-50">
-                        <td className="px-4 py-1 border">Agama</td>
-                        <td className="px-4 py-1 border">{dataAyah?.agama}</td>
-                        <td className="px-4 py-1 border">{dataIbu?.agama}</td>
+                        <td className="px-4 py-1 border !pb-4">Agama</td>
+                        <td className="px-4 py-1 border !pb-4">
+                          {dataAyah?.agama}
+                        </td>
+                        <td className="px-4 py-1 border !pb-4">
+                          {dataIbu?.agama}
+                        </td>
                       </tr>
                       <tr className="border-b hover:bg-gray-50">
-                        <td className="px-4 py-1 border">Suku</td>
-                        <td className="px-4 py-1 border">{dataAyah?.suku}</td>
-                        <td className="px-4 py-1 border">{dataIbu?.suku}</td>
+                        <td className="px-4 py-1 border !pb-4">Suku</td>
+                        <td className="px-4 py-1 border !pb-4">
+                          {dataAyah?.suku}
+                        </td>
+                        <td className="px-4 py-1 border !pb-4">
+                          {dataIbu?.suku}
+                        </td>
                       </tr>
                       <tr className="border-b hover:bg-gray-50">
-                        <td className="px-4 py-1 border">Pendidikan</td>
-                        <td className="px-4 py-1 border">
+                        <td className="px-4 py-1 border !pb-4">Pendidikan</td>
+                        <td className="px-4 py-1 border !pb-4">
                           {dataAyah?.pendidikan}
                         </td>
-                        <td className="px-4 py-1 border">
+                        <td className="px-4 py-1 border !pb-4">
                           {dataIbu?.pendidikan}
                         </td>
                       </tr>
                       <tr className="border-b hover:bg-gray-50">
-                        <td className="px-4 py-1 border">Pekerjaan</td>
-                        <td className="px-4 py-1 border">
+                        <td className="px-4 py-1 border !pb-4">Pekerjaan</td>
+                        <td className="px-4 py-1 border !pb-4">
                           {dataAyah?.pekerjaan}
                         </td>
-                        <td className="px-4 py-1 border">
+                        <td className="px-4 py-1 border !pb-4">
                           {dataIbu?.pekerjaan}
                         </td>
                       </tr>
                       <tr className="border-b hover:bg-gray-50">
-                        <td className="px-4 py-1 border">Alamat</td>
-                        <td className="px-4 py-1 border">{dataAyah?.alamat}</td>
-                        <td className="px-4 py-1 border">{dataIbu?.alamat}</td>
+                        <td className="px-4 py-1 border !pb-4">Alamat</td>
+                        <td className="px-4 py-1 border !pb-4">
+                          {dataAyah?.alamat}
+                        </td>
+                        <td className="px-4 py-1 border !pb-4">
+                          {dataIbu?.alamat}
+                        </td>
                       </tr>
                       <tr className="border-b hover:bg-gray-50">
-                        <td className="px-4 py-1 border">
+                        <td className="px-4 py-1 border !pb-4">
                           Penghasilan per bulan
                         </td>
-                        <td className="px-4 py-1 border">{dataAyah?.gaji}</td>
-                        <td className="px-4 py-1 border">{dataIbu?.gaji}</td>
+                        <td className="px-4 py-1 border !pb-4">
+                          {formatCurrency(+Number(dataAyah?.gaji) || 0)}
+                        </td>
+                        <td className="px-4 py-1 border !pb-4">
+                          {formatCurrency(+Number(dataIbu?.gaji) || 0)}
+                        </td>
                       </tr>
                       <tr className="border-b hover:bg-gray-50">
-                        <td className="px-4 py-1 border">Email</td>
-                        <td className="px-4 py-1 border">{dataAyah?.email}</td>
-                        <td className="px-4 py-1 border">{dataIbu?.email}</td>
+                        <td className="px-4 py-1 border !pb-4">Email</td>
+                        <td className="px-4 py-1 border !pb-4">
+                          {dataAyah?.email}
+                        </td>
+                        <td className="px-4 py-1 border !pb-4">
+                          {dataIbu?.email}
+                        </td>
                       </tr>
                       <tr className="border-b hover:bg-gray-50">
-                        <td className="px-4 py-1 border">No. HP</td>
-                        <td className="px-4 py-1 border">{dataAyah?.no_hp}</td>
-                        <td className="px-4 py-1 border">{dataIbu?.no_hp}</td>
+                        <td className="px-4 py-1 border !pb-4">No. HP</td>
+                        <td className="px-4 py-1 border !pb-4">
+                          {dataAyah?.no_hp}
+                        </td>
+                        <td className="px-4 py-1 border !pb-4">
+                          {dataIbu?.no_hp}
+                        </td>
                       </tr>
                     </tbody>
                   </table>

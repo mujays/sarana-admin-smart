@@ -69,6 +69,7 @@ export default function AlumniPage() {
                 value={search}
                 onChange={(e) => {
                   setSearch(e.target.value);
+                  setPagination({ page: 1, pageSize: pagination.pageSize });
                 }}
                 prefix={<SearchIcon className="text-gray-300" />}
               />
