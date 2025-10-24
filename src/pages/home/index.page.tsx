@@ -8,9 +8,15 @@ import {
   storeTokenPerpus,
 } from "@/libraries/auth";
 import AuthService from "@/services/auth";
+import { UserAddOutlined } from "@ant-design/icons";
 import { useQuery } from "@tanstack/react-query";
 import { Calendar, Modal, Typography } from "antd";
-import { BanknoteIcon, LibraryIcon, SquareUserIcon } from "lucide-react";
+import {
+  BanknoteIcon,
+  LibraryIcon,
+  SquareUserIcon,
+  UserCog2Icon,
+} from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -219,6 +225,20 @@ function HomePage() {
             </div>
             <p className="font-semibold text-xl text-center text-orange-500">
               Perpustakaan
+            </p>
+          </div>
+          <div
+            className="flex flex-col w-full bg-white p-4 gap-4 cursor-pointer"
+            onClick={() => {
+              setLoginTo("perpustakaan");
+              modal.onOpen();
+            }}
+          >
+            <div className="bg-blue-500 flex justify-center items-center h-36 rounded-lg">
+              <UserCog2Icon className="text-white h-16 w-16" />
+            </div>
+            <p className="font-semibold text-xl text-center text-blue-500">
+              Super Admin
             </p>
           </div>
         </div>
