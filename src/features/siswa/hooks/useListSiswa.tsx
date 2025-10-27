@@ -121,13 +121,13 @@ function useListSiswa({
               <>
                 <Button
                   type="primary"
-                  onClick={() => router.push(`${router.asPath}/${record.id}`)}
+                  onClick={() => router.push(`${router.pathname}/${record.id}`)}
                 >
                   Tagihan SPP
                 </Button>
                 <Button
                   onClick={() =>
-                    router.push(`${router.asPath}/${record.id}/uang-pangkal`)
+                    router.push(`${router.pathname}/${record.id}/uang-pangkal`)
                   }
                 >
                   Tagihan Lainnya

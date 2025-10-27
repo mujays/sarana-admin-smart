@@ -12,12 +12,14 @@ import { Paragraph } from "@/components/paragraph";
 import { Badge, Button, Popover } from "antd";
 import classNames from "classnames";
 import Cookies from "js-cookie";
-import { ChevronLeft, User2Icon } from "lucide-react";
+import { ArrowLeftRightIcon, ChevronLeft, User, User2Icon } from "lucide-react";
 import { useRouter } from "next/router";
 import { useQuery } from "@tanstack/react-query";
 import AuthService from "@/services/auth";
 import Notification from "./notification";
 import NotificationService from "@/services/notification";
+import { UserOutlined } from "@ant-design/icons";
+import { useSuperAdmin } from "@/hooks/useSuperAdmin";
 
 export type TAuthenticatedNavbar = {
   activeLink:
@@ -51,6 +53,14 @@ export type TAuthenticatedNavbar = {
  */
 export const AuthenticatedNavbar = (props: WithStyle<TAuthenticatedNavbar>) => {
   const router = useRouter();
+  const {
+    isSuperAdmin,
+    superAdminToken,
+    superAdminEmail,
+    switchToSuperAdmin,
+    switchToNormalAdmin,
+    logoutSuperAdmin,
+  } = useSuperAdmin();
 
   const { data: notifications } = useQuery({
     queryKey: ["NOTIFICATIONS-NAV"],
@@ -90,6 +100,34 @@ export const AuthenticatedNavbar = (props: WithStyle<TAuthenticatedNavbar>) => {
       </div>
 
       <div className={styles["right-side"]}>
+        {!router.pathname.includes("/keuangan") ? null : isSuperAdmin ? (
+          <Button
+            icon={<ArrowLeftRightIcon />}
+            onClick={switchToNormalAdmin}
+            type="default"
+          >
+            Switch ke Admin Biasa
+          </Button>
+        ) : superAdminToken ? (
+          <Button
+            icon={<ArrowLeftRightIcon />}
+            onClick={switchToSuperAdmin}
+            type="primary"
+          >
+            Switch ke Super Admin
+          </Button>
+        ) : (
+          <Button
+            onClick={() => {
+              router.push("/super-admin-auth?redirect=" + router.asPath);
+            }}
+            type="link"
+            icon={<UserOutlined />}
+          >
+            Masuk ke Super Admin
+          </Button>
+        )}
+
         <Popover content={<Notification />} trigger="click">
           <Badge
             count={notifications?.data.filter((notif) => !notif.is_read).length}
@@ -125,28 +163,35 @@ export const AuthenticatedNavbar = (props: WithStyle<TAuthenticatedNavbar>) => {
               overflow: "hidden",
             },
             items: [
-              // {
-              //   key: "1",
-              //   style: {
-              //     paddingTop: "8px",
-              //     paddingBottom: "8px",
-              //     borderRadius: 0,
-              //   },
-              //   label: (
-              //     <Link type="next-link" href="/profile" passHref>
-              //       <div
-              //         style={{
-              //           display: "flex",
-              //           gap: "12px",
-              //           alignItems: "center",
-              //         }}
-              //       >
-              //         <AccountIcon />
-              //         Profile
-              //       </div>
-              //     </Link>
-              //   ),
-              // },
+              // Super Admin logout option (only show if in super admin mode)
+              ...(isSuperAdmin
+                ? [
+                    {
+                      key: "super-admin-logout",
+                      style: {
+                        paddingTop: "8px",
+                        paddingBottom: "8px",
+                        borderRadius: 0,
+                      },
+                      label: (
+                        <div
+                          style={{
+                            display: "flex",
+                            gap: "12px",
+                            alignItems: "center",
+                          }}
+                        >
+                          <UserOutlined />
+                          Keluar dari Super Admin
+                        </div>
+                      ),
+                      onClick: () => {
+                        logoutSuperAdmin();
+                        router.reload();
+                      },
+                    },
+                  ]
+                : []),
               {
                 key: "2",
                 style: {

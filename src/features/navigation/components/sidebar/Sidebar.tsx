@@ -25,7 +25,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { ROUTE_MAP } from "../../constants";
 import Image from "next/image";
-import { HomeFilled } from "@ant-design/icons";
+import { ArrowDownOutlined, HomeFilled } from "@ant-design/icons";
 
 const menuItemStyle = {
   paddingLeft: "12px",
@@ -114,7 +114,7 @@ export const Sidebar = () => {
         }}
         // className="!hidden md:block"
         icon={
-          <ChevronDownIcon
+          <ArrowDownOutlined
             className={classNames(
               "transition-transform",
               isSidebarCollapsed ? "rotate-[270deg]" : "rotate-[90deg]",

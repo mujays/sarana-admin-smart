@@ -21,7 +21,7 @@ function DetailTagihanPage() {
   const [tahunAjaranId, setTahunAjaranId] = useState<null | number>(null);
   const [pagination, setPagination] = useState({
     page: 1,
-    pageSize: 10,
+    pageSize: 12,
   });
   const paths = router.pathname.split("/");
   const { siswaId } = router.query;
@@ -65,13 +65,6 @@ function DetailTagihanPage() {
     },
   });
 
-  console.log({
-    billMonthly,
-    tahunAjaran: tahunAjaran?.data
-      .find((ta) => ta.id === tahunAjaranId)
-      ?.name.split("/"),
-  });
-
   const memoTahunAjaran = useMemo(() => {
     return tahunAjaran?.data
       .find((ta) => ta.id === tahunAjaranId)
@@ -101,8 +94,6 @@ function DetailTagihanPage() {
 
     return result;
   }, [tahunAjaran, billMonthly]);
-
-  console.log({ mapping });
 
   useEffect(() => {
     if (tahunAjaran) {

@@ -3,6 +3,15 @@ import { NextResponse, type NextRequest } from "next/server";
 
 export function middleware(request: NextRequest) {
   const accessToken = request.cookies.get("session_kesiswaan");
+  const accessTokenSuperAdmin = request.cookies.get(
+    "session_keuangan_super_admin",
+  );
+
+  if (request.nextUrl.pathname === "/super-admin-auth") {
+    if (accessTokenSuperAdmin) {
+      return NextResponse.redirect(new URL("/home", request.url));
+    }
+  }
 
   if (request.nextUrl.pathname === "/login") {
     if (accessToken) {

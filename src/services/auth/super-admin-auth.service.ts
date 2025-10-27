@@ -25,6 +25,27 @@ export const superAdminAuthService = {
     const response = await axiosConfigFinance.post("/admin-super/login", data);
     return response.data;
   },
+  forgotPassword: async (data: {
+    email: string;
+  }): Promise<SuperAdminAuthResponse> => {
+    const response = await axiosConfigFinance.post(
+      "/admin-super/forgot-password",
+      data,
+    );
+    return response.data;
+  },
+  resetPassword: async (data: {
+    password: string;
+    token: string;
+    email: string;
+    password_confirmation?: string;
+  }): Promise<SuperAdminAuthResponse> => {
+    const response = await axiosConfigFinance.post(
+      "/admin-super/reset-password",
+      data,
+    );
+    return response.data;
+  },
 
   verifyOTP: async (
     data: VerifyOTPRequest,

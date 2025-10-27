@@ -3,22 +3,24 @@ import { useSuperAdminStore } from "@/stores/super-admin";
 import axios, { AxiosError } from "axios";
 import Cookies from "js-cookie";
 
-const axiosConfigFinance = axios.create({
+const axiosConfigFinanceSuperAdmin = axios.create({
   baseURL: `${process.env.NEXT_PUBLIC_API_SOURCE_FINANCE}api/v1`,
   headers: {
     Accept: "application/json",
   },
 });
 
-axiosConfigFinance.interceptors.request.use(
+axiosConfigFinanceSuperAdmin.interceptors.request.use(
   async function (config) {
+    // Check if we're in super admin mode
     const superAdminCookie = Cookies.get("session_keuangan_super_admin");
     const { isSuperAdmin } = useSuperAdminStore.getState();
-    console.log({ isSuperAdmin, superAdminCookie });
+
     if (isSuperAdmin && superAdminCookie) {
-      console.log("SUPER");
+      // Use super admin token
       config.headers.Authorization = "Bearer " + superAdminCookie;
     } else {
+      // Use regular admin token
       const session = await getTokenKeuangan();
       if (session) {
         config.headers.Authorization = "Bearer " + session;
@@ -32,7 +34,7 @@ axiosConfigFinance.interceptors.request.use(
   },
 );
 
-axiosConfigFinance.interceptors.response.use(
+axiosConfigFinanceSuperAdmin.interceptors.response.use(
   function (res) {
     return res;
   },
@@ -62,4 +64,4 @@ axiosConfigFinance.interceptors.response.use(
   },
 );
 
-export default axiosConfigFinance;
+export default axiosConfigFinanceSuperAdmin;

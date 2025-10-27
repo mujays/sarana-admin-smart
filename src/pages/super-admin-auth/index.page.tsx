@@ -8,6 +8,7 @@ import {
   RefreshCw,
   LockIcon,
 } from "lucide-react";
+import Link from "next/link";
 import { Button } from "@/components/button";
 import { Form } from "@/components/form";
 import { Title } from "@/components/title";
@@ -18,6 +19,7 @@ import { superAdminAuthService } from "@/services/auth/super-admin-auth.service"
 import Cookies from "js-cookie";
 import styles from "./styles.module.css";
 import { toast } from "sonner";
+import { useSuperAdmin } from "@/hooks/useSuperAdmin";
 
 interface EmailFormData {
   email: string;
@@ -38,6 +40,7 @@ type AuthStep = "email" | "otp";
 
 function SuperAdminAuth() {
   const router = useRouter();
+  const { loginAsSuperAdmin } = useSuperAdmin();
   const [currentStep, setCurrentStep] = useState<AuthStep>("email");
   const [email, setEmail] = useState("");
   const [adminSuperId, setAdminSuperId] = useState<number | null>(null);
@@ -164,12 +167,14 @@ function SuperAdminAuth() {
 
       if (response.success) {
         if (response.data?.token) {
-          Cookies.set("session_kesiswaan_super_admin", response.data.token, {
-            expires: 30,
-          });
+          // Use Zustand store to manage super admin state
+          loginAsSuperAdmin(response.data.token, email);
         }
-        toast.success("Login berhasil!");
-        router.push("/home");
+        toast.success("Login berhasil sebagai Super Admin!");
+
+        // Check if there's a redirect parameter
+        const redirectTo = router.query.redirect as string;
+        router.push(redirectTo || "/home");
       } else {
         setError(
           response.message ||
@@ -227,7 +232,7 @@ function SuperAdminAuth() {
       <div className={styles["logo-container"]}>
         <Image
           src="/images/logo-color.png"
-          alt="Logo SARANA"
+          alt="Logo Smart School"
           width={80}
           height={80}
           className="object-contain"
@@ -345,6 +350,16 @@ function SuperAdminAuth() {
           {isLoading ? "Mengirim Kode..." : "Kirim Kode Verifikasi"}
         </Button>
       </Form>
+
+      {/* Link Lupa Password */}
+      <div className="text-center mt-4">
+        <Link
+          href="/super-admin-auth/lupa-password"
+          className="text-blue-600 hover:text-blue-800 text-sm"
+        >
+          Lupa Password?
+        </Link>
+      </div>
 
       <div className={styles["warning-text"]}>
         <Paragraph className="text-xs">
