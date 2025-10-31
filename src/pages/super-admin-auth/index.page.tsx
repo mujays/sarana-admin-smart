@@ -351,14 +351,25 @@ function SuperAdminAuth() {
         </Button>
       </Form>
 
-      {/* Link Lupa Password */}
-      <div className="text-center mt-4">
-        <Link
-          href="/super-admin-auth/lupa-password"
-          className="text-blue-600 hover:text-blue-800 text-sm"
-        >
-          Lupa Password?
-        </Link>
+      {/* Navigation Links */}
+      <div className="text-center mt-4 space-y-2">
+        <div>
+          <Link
+            href="/super-admin-auth/lupa-password"
+            className="text-blue-600 hover:text-blue-800 text-sm"
+          >
+            Lupa Password?
+          </Link>
+        </div>
+        <div>
+          <span className="text-gray-600 text-sm">Belum punya akun? </span>
+          <Link
+            href="/super-admin-auth/register"
+            className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+          >
+            Daftar Super Admin
+          </Link>
+        </div>
       </div>
 
       <div className={styles["warning-text"]}>

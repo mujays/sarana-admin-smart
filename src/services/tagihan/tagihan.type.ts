@@ -48,6 +48,7 @@ export type TTransaction = {
   wali_id: number;
   tagihan_id: number;
   transaction_sid: string;
+  catatan: string;
   transaction_id_ipaymu: string | null;
   status: string;
   buyer_payment: number;

@@ -63,7 +63,10 @@ function useListTagihanAdmission({ limit, page, siswaId }: Props) {
       title: "Nominal",
       dataIndex: "nominal",
       render: (value = "", record) => (
-        <Text className="font-bold" style={{ textTransform: "uppercase" }}>
+        <Text
+          className="font-bold whitespace-nowrap"
+          style={{ textTransform: "uppercase" }}
+        >
           {formatCurrency(value)}
         </Text>
       ),
@@ -73,7 +76,7 @@ function useListTagihanAdmission({ limit, page, siswaId }: Props) {
       dataIndex: "pembayaran_sudah",
       render: (value = "", record) => (
         <Text
-          className="!text-green-500"
+          className="!text-green-500 whitespace-nowrap"
           style={{ textTransform: "uppercase" }}
         >
           {formatCurrency(value)}

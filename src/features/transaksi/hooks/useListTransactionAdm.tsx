@@ -126,14 +126,13 @@ function useListTransaksiAdm({ limit, page }: Props) {
           "-"
         ),
     },
-
     {
       title: "Konfirmasi",
       dataIndex: "bukti_pembayaran",
       render: (value, record) => {
         return record.payment_method &&
           record.payment_method?.toLowerCase() === "manual" &&
-          record.status === "pending" ? (
+          record.status.toLocaleLowerCase() === "pending" ? (
           <div className="flex gap-2">
             <ConfirmPayment
               status="berhasil"

@@ -23,6 +23,8 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import "dayjs/locale/id";
+import { superAdminAuthService } from "@/services/auth/super-admin-auth.service";
+import CurrencyInput from "@/components/currency-input";
 
 dayjs.locale("id");
 dayjs.extend(customParseFormat);
@@ -36,28 +38,6 @@ function EditTagihanAdmission({ tagihanId }: { tagihanId: number }) {
   const queryClient = useQueryClient();
   const { siswaId } = router.query;
 
-  const { data: types } = useQuery({
-    queryKey: ["TYPES_ADMISSION"],
-    queryFn: async () => {
-      const response = await TypeServices.getAdmissionType({
-        page_size: 1000000,
-        page: 1,
-      });
-      return response;
-    },
-  });
-
-  const { data: tahunAjaran } = useQuery({
-    queryKey: ["ACADEMIC"],
-    queryFn: async () => {
-      const response = await TahunAjaranService.get({
-        page_size: 1000000,
-        page: 1,
-      });
-      return response;
-    },
-  });
-
   const { data: tagihan } = useQuery({
     queryKey: ["BILL_ADMISSION", tagihanId],
     enabled: modal.isOpen,
@@ -70,11 +50,10 @@ function EditTagihanAdmission({ tagihanId }: { tagihanId: number }) {
   const onSubmit = async (val: any) => {
     try {
       setLoading(true);
-      await TagihanService.updateAdmission(tagihanId, {
+      await superAdminAuthService.editUangPangkal(tagihanId, {
         ...val,
-        tanggal_mulai: dayjs(val.periode[0]).format("YYYY-MM-DD"),
-        tanggal_berakhir: dayjs(val.periode[1]).format("YYYY-MM-DD"),
         siswa_id: siswaId,
+        keterangan: val?.keterangan || "-",
       });
       queryClient.invalidateQueries({
         queryKey: ["BILLS_ADMISSION"],
@@ -94,14 +73,9 @@ function EditTagihanAdmission({ tagihanId }: { tagihanId: number }) {
 
   useEffect(() => {
     if (tagihan) {
-      form.setFieldValue("nama", tagihan.data.nama);
       form.setFieldValue("nominal", tagihan.data.nominal);
-      form.setFieldValue("tahun_ajaran_id", tagihan.data.tahun_ajaran_id);
-      const rangePeriode = [
-        dayjs(tagihan.data.tanggal_mulai),
-        dayjs(tagihan.data.tanggal_berakhir),
-      ];
-      form.setFieldValue("periode", rangePeriode);
+      form.setFieldValue("nominal_terbayar", tagihan.data.pembayaran_sudah);
+      form.setFieldValue("keterangan", tagihan.data.keterangan);
     }
   }, [tagihan, modal.isOpen]);
 
@@ -128,58 +102,65 @@ function EditTagihanAdmission({ tagihanId }: { tagihanId: number }) {
         title={<Typography.Title level={4}>Edit Tagihan</Typography.Title>}
       >
         <Form form={form} requiredMark layout="vertical" onFinish={onSubmit}>
-          <Form.Item
+          {/* <Form.Item
             label="Nama"
             name="nama"
             className="w-full mb-2"
             rules={[{ required: true, message: "Nama harus diisi" }]}
           >
             <Input placeholder="Tagihan" maxLength={255} />
-          </Form.Item>
+          </Form.Item> */}
 
           <Form.Item
-            label="Periode"
-            name="periode"
+            label="Nominal Terbayar"
+            name="nominal_terbayar"
             className="w-full mb-2"
-            rules={[{ required: true, message: "Periode harus diisi" }]}
+            rules={[
+              { required: true, message: "Nominal terbayar harus diisi" },
+            ]}
           >
-            <DatePicker.RangePicker
-              picker="month"
-              allowClear={false}
-              format="MMMM YYYY"
-              className="w-full"
-            />
+            <CurrencyInput className="w-full" />
           </Form.Item>
 
           <Form.Item
-            name="tahun_ajaran_id"
-            label="Tahun Ajaran"
-            rules={[{ required: true, message: "Tahun Ajaran harus diisi" }]}
-            className="mb-2"
-          >
-            <Select
-              placeholder="Pilih Tahun Ajaran"
-              options={tahunAjaran?.data.map((ta) => ({
-                label: ta.name,
-                value: ta.id,
-              }))}
-            />
-          </Form.Item>
-
-          <Form.Item
-            label="Nominal"
+            label="Nominal Tagihan"
             name="nominal"
-            className="mb-2 w-full"
+            className="w-full mb-2"
             rules={[{ required: true, message: "Nominal harus diisi" }]}
           >
-            <InputNumber
-              prefix="Rp. "
-              placeholder="Nominal"
-              className="w-full"
-              step={100000}
-              min={0}
+            <CurrencyInput className="w-full" />
+          </Form.Item>
+
+          <Form.Item
+            label="Status"
+            name="status"
+            className="mb-2"
+            rules={[{ required: true, message: "Status harus dipilih" }]}
+          >
+            <Select
+              placeholder="Status"
+              className="w-40"
+              options={[
+                {
+                  label: "Lunas",
+                  value: "lunas",
+                },
+                {
+                  label: "Belum Lunas",
+                  value: "belum_lunas",
+                },
+              ]}
             />
           </Form.Item>
+          <div className="flex gap-2">
+            <Form.Item
+              label="Catatan"
+              name="keterangan"
+              className="w-full mb-2"
+            >
+              <Input.TextArea placeholder="Tulis catatan..." />
+            </Form.Item>
+          </div>
         </Form>
       </Modal>
     </Tooltip>

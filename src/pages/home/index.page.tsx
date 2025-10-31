@@ -213,7 +213,7 @@ function HomePage() {
               Keuangan SMP
             </p>
           </div>
-          <div
+          {/* <div
             className="flex flex-col w-full bg-white p-4 gap-4 cursor-pointer"
             onClick={() => {
               setLoginTo("perpustakaan");
@@ -226,21 +226,7 @@ function HomePage() {
             <p className="font-semibold text-xl text-center text-orange-500">
               Perpustakaan
             </p>
-          </div>
-          <div
-            className="flex flex-col w-full bg-white p-4 gap-4 cursor-pointer"
-            onClick={() => {
-              setLoginTo("perpustakaan");
-              modal.onOpen();
-            }}
-          >
-            <div className="bg-blue-500 flex justify-center items-center h-36 rounded-lg">
-              <UserCog2Icon className="text-white h-16 w-16" />
-            </div>
-            <p className="font-semibold text-xl text-center text-blue-500">
-              Super Admin
-            </p>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

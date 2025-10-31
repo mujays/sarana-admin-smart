@@ -7,7 +7,6 @@ import { Protected, RedirectIfDoneAuth } from "@/features/auth";
 import "@/styles/globals.css";
 import NextProgress from "next-progress";
 import { Toaster } from "sonner";
-import { parseCookies } from "nookies";
 
 type NextPageExtended = NextPage & {
   withLayout?: (page: ReactElement) => ReactNode;

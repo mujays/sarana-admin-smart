@@ -8,6 +8,8 @@ import { ConfirmPayment } from "../components/ConfirmPayment";
 import { formatCurrency } from "@/stores/utils";
 import { useRouter } from "next/router";
 import { Invoices } from "../components/Invoices";
+import EditTransaction from "../components/EditTransaction";
+import { useSuperAdmin } from "@/hooks/useSuperAdmin";
 
 type Props = {
   page: number;
@@ -19,6 +21,8 @@ function useListTransaksi({ limit, page, search }: Props) {
   const router = useRouter();
   const paths = router.pathname.split("/");
   const type = paths[1];
+
+  const { isSuperAdmin } = useSuperAdmin();
 
   const { data: transaksi, isLoading } = useQuery({
     queryKey: ["TRX", page, limit, search],
@@ -64,7 +68,8 @@ function useListTransaksi({ limit, page, search }: Props) {
       title: "Status",
       dataIndex: "status",
       render: (value = "") =>
-        value.toLowerCase() === "berhasil" ? (
+        value.toLowerCase() === "berhasil" ||
+        value.toLowerCase() === "completed" ? (
           <Tag color="green" className="capitalize">
             {value}
           </Tag>
@@ -150,6 +155,19 @@ function useListTransaksi({ limit, page, search }: Props) {
         );
       },
     },
+    !isSuperAdmin
+      ? {}
+      : {
+          title: "Action",
+          key: "",
+          render: (value, record, index) => {
+            return (
+              <div key={record.id} className="flex gap-[8px]">
+                <EditTransaction transactionId={record.id} />
+              </div>
+            );
+          },
+        },
   ];
   return { columns, transaksi, isLoading };
 }

@@ -53,6 +53,12 @@ const TagihanService = {
     });
     return response.data;
   },
+  getOneTrx: async (id: number) => {
+    const response = await axiosConfigFinance.get<BaseResponse<TTransaction>>(
+      "/transaction" + `/${id}`,
+    );
+    return response.data;
+  },
   getTrxAdmission: async (params?: any) => {
     const response = await axiosConfigFinance.get<
       BaseResponsePaginate<TTransactionAdmission>

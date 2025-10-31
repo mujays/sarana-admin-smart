@@ -15,9 +15,14 @@ import { ReactElement, useEffect, useMemo, useState } from "react";
 import { Breadcrumb } from "../navigation/components/breadcrumb";
 import AddTagihan from "./components/AddTagihan";
 import useListTagihan from "./hooks/useListTagihan";
+import { TTagihan } from "@/services/tagihan/tagihan.type";
+import { useSuperAdmin } from "@/hooks/useSuperAdmin";
+import BuklTagihan from "./components/BulkTagihan";
+import { CompleteTagihan } from "./components/CompleteTagihan";
 
 function DetailTagihanPage() {
   const router = useRouter();
+  const [selectedTagihan, setSelectedTagihan] = useState<TTagihan[]>([]);
   const [tahunAjaranId, setTahunAjaranId] = useState<null | number>(null);
   const [pagination, setPagination] = useState({
     page: 1,
@@ -25,6 +30,8 @@ function DetailTagihanPage() {
   });
   const paths = router.pathname.split("/");
   const { siswaId } = router.query;
+
+  const { isSuperAdmin } = useSuperAdmin();
 
   const { columns, isLoading, bills } = useListTagihan({
     limit: pagination.pageSize,
@@ -166,6 +173,24 @@ function DetailTagihanPage() {
 
           <div className="p-3 space-y-3 border rounded">
             <div className="flex items-center justify-end flex-wrap gap-[8px]">
+              {selectedTagihan.length > 0 && isSuperAdmin && (
+                <>
+                  <CompleteTagihan
+                    onSuccess={() => setSelectedTagihan([])}
+                    tagihanIds={selectedTagihan.map((t) => t.id)}
+                    isLunas={true}
+                  />
+                  <CompleteTagihan
+                    onSuccess={() => setSelectedTagihan([])}
+                    tagihanIds={selectedTagihan.map((t) => t.id)}
+                    isLunas={false}
+                  />
+                  <BuklTagihan
+                    onSuccess={() => setSelectedTagihan([])}
+                    tagihanIds={selectedTagihan.map((t) => t.id)}
+                  />
+                </>
+              )}
               <AddTagihan />
             </div>
 
@@ -175,6 +200,23 @@ function DetailTagihanPage() {
                 columns={columns}
                 dataSource={bills?.data}
                 loading={isLoading}
+                rowKey={(obj) => obj.id}
+                rowSelection={
+                  isSuperAdmin
+                    ? {
+                        selectedRowKeys: selectedTagihan.map(
+                          (tagihan) => tagihan.id,
+                        ),
+                        onChange(selectedRowKeys) {
+                          setSelectedTagihan(
+                            bills?.data.filter((bill) =>
+                              selectedRowKeys.includes(bill.id),
+                            ) || [],
+                          );
+                        },
+                      }
+                    : undefined
+                }
                 pagination={{
                   onChange: (page, pageSize) => {
                     setPagination({ page, pageSize });

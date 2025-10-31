@@ -24,7 +24,7 @@ export const useSuperAdminStore = create<SuperAdminState>()(
       setSuperAdmin: (token: string, email: string) => {
         // Set cookie untuk super admin
         Cookies.set("session_keuangan_super_admin", token, {
-          expires: 7, // 7 days
+          expires: new Date(Date.now() + 30 * 60 * 1000), // 30 minutes
           secure: process.env.NODE_ENV === "production",
           sameSite: "strict",
         });

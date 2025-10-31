@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import { DeleteTagihan } from "../components/DeleteTegihan";
 import EditTagihan from "../components/EditTagihan";
 import { CompleteTagihan } from "../components/CompleteTagihan";
+import { useSuperAdmin } from "@/hooks/useSuperAdmin";
 
 type Props = {
   page: number;
@@ -24,7 +25,7 @@ function useListTagihan({
   tahunAjaranId,
   hideColumn = false,
 }: Props) {
-  const router = useRouter();
+  const { isSuperAdmin } = useSuperAdmin();
 
   const { data: bills, isLoading } = useQuery({
     queryKey: ["BILLS", page, limit, tahunAjaranId, siswaId],
@@ -67,7 +68,10 @@ function useListTagihan({
       title: "Biaya",
       dataIndex: "biaya",
       render: (value = "", record) => (
-        <Text style={{ textTransform: "uppercase" }}>
+        <Text
+          className="whitespace-nowrap"
+          style={{ textTransform: "uppercase" }}
+        >
           {formatCurrency(value)}
         </Text>
       ),
@@ -76,7 +80,10 @@ function useListTagihan({
       title: "Jatuh Tempo",
       dataIndex: "jatuh_tempo",
       render: (value = "", record) => (
-        <Text style={{ textTransform: "uppercase" }}>
+        <Text
+          className="whitespace-nowrap"
+          style={{ textTransform: "uppercase" }}
+        >
           {new Date(value).getDate()} {record.bulan}
         </Text>
       ),
@@ -100,8 +107,8 @@ function useListTagihan({
             return (
               <div key={record.id} className="flex gap-[8px]">
                 <DeleteTagihan tagihanId={record.id} />
-                <EditTagihan tagihanId={record.id} />
-                {record.is_lunas ? null : <CompleteTagihan tagihan={record} />}
+                {isSuperAdmin && <EditTagihan tagihanId={record.id} />}
+                {/* {record.is_lunas ? null : <CompleteTagihan tagihan={record} />} */}
               </div>
             );
           },

@@ -9,21 +9,32 @@ import { CheckIcon } from "lucide-react";
 import * as React from "react";
 import { toast } from "sonner";
 
-export function CompleteTagihan({ tagihan }: { tagihan: TTagihan }) {
+export function CompleteTagihan({
+  tagihanIds,
+  onSuccess,
+  isLunas,
+}: {
+  tagihanIds?: number[];
+  onSuccess: () => void;
+  isLunas: boolean;
+}) {
   const queryClient = useQueryClient();
   const modal = useDisclosure();
   const [isLoading, setIsLoading] = React.useState(false);
 
   async function handleComplete() {
     try {
-      setIsLoading(true);
-      await TagihanService.update(tagihan.id, {
-        ...tagihan,
-        is_lunas: true,
-        bulan: new Date(tagihan.jatuh_tempo).getMonth(),
+      await TagihanService.sync({
+        items: tagihanIds?.map((id) => ({
+          id,
+          is_lunas: isLunas,
+        })),
       });
-      toast.success("Tagihan berhasil dilunasi!");
-      queryClient.invalidateQueries({ queryKey: ["BILLS"] });
+      queryClient.invalidateQueries({
+        queryKey: ["BILLS"],
+      });
+      toast.success("Data berhasil diperbarui");
+      onSuccess();
       modal.onClose();
     } catch (error) {
       errorResponse(error as AxiosError);
@@ -36,15 +47,16 @@ export function CompleteTagihan({ tagihan }: { tagihan: TTagihan }) {
     <Tooltip title="Lunasi">
       <Button
         className="w-full px-3 text-green-500"
-        icon={<CheckIcon className="w-5 h-5 text-green-500" />}
-        type="text"
         onClick={() => modal.onOpen()}
-      ></Button>
+        type="link"
+      >
+        {isLunas ? "Lunasi" : "Batalkan Lunasi"}
+      </Button>
 
       <Modal
         title={
           <Typography.Title className="font-normal" level={3}>
-            Lunasi Tagihan
+            {isLunas ? "Lunasi Tagihan" : "Batalkan Pelunasan Tagihan"}
           </Typography.Title>
         }
         open={modal.isOpen}
@@ -57,7 +69,8 @@ export function CompleteTagihan({ tagihan }: { tagihan: TTagihan }) {
         onOk={handleComplete}
       >
         <Typography.Text>
-          Apakah yakin ingin melunasi tagihan ini?
+          Apakah yakin ingin {isLunas ? "melunasi" : "membatalkan pelunasan"}{" "}
+          tagihan ini?
         </Typography.Text>
       </Modal>
     </Tooltip>
