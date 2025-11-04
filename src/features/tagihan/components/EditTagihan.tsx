@@ -20,7 +20,10 @@ import { EditIcon } from "lucide-react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { createEmojiPreventionHandler, noEmojiRule } from "@/utils/emoji-prevention";
+import {
+  createEmojiPreventionHandler,
+  noEmojiRule,
+} from "@/utils/emoji-prevention";
 
 function EditTagihan({ tagihanId }: { tagihanId: number }) {
   const modal = useDisclosure();
@@ -158,9 +161,9 @@ function EditTagihan({ tagihanId }: { tagihanId: number }) {
               noEmojiRule,
             ]}
           >
-            <Input 
-              placeholder="Seragam, SPP" 
-              maxLength={255} 
+            <Input
+              placeholder="Seragam, SPP"
+              maxLength={255}
               onChange={createEmojiPreventionHandler()}
             />
           </Form.Item>

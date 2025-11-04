@@ -9,7 +9,10 @@ import { EditIcon } from "lucide-react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { createEmojiPreventionHandler, noEmojiRule } from "@/utils/emoji-prevention";
+import {
+  createEmojiPreventionHandler,
+  noEmojiRule,
+} from "@/utils/emoji-prevention";
 
 function EditWali({ waliId }: { waliId: number }) {
   const modal = useDisclosure();
@@ -122,9 +125,9 @@ function EditWali({ waliId }: { waliId: number }) {
               noEmojiRule,
             ]}
           >
-            <Input 
-              placeholder="Nama" 
-              maxLength={255} 
+            <Input
+              placeholder="Nama"
+              maxLength={255}
               onChange={createEmojiPreventionHandler()}
             />
           </Form.Item>
@@ -147,9 +150,9 @@ function EditWali({ waliId }: { waliId: number }) {
               noEmojiRule,
             ]}
           >
-            <Input 
-              placeholder="Hubungan" 
-              maxLength={255} 
+            <Input
+              placeholder="Hubungan"
+              maxLength={255}
               onChange={createEmojiPreventionHandler()}
             />
           </Form.Item>
@@ -164,9 +167,9 @@ function EditWali({ waliId }: { waliId: number }) {
                 noEmojiRule,
               ]}
             >
-              <Input 
-                placeholder="Pekerjaan" 
-                maxLength={255} 
+              <Input
+                placeholder="Pekerjaan"
+                maxLength={255}
                 onChange={createEmojiPreventionHandler()}
               />
             </Form.Item>

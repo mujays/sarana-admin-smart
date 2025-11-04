@@ -8,7 +8,10 @@ import { AxiosError } from "axios";
 import { PencilIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { createEmojiPreventionHandler, noEmojiRule } from "@/utils/emoji-prevention";
+import {
+  createEmojiPreventionHandler,
+  noEmojiRule,
+} from "@/utils/emoji-prevention";
 
 function UpdateWithdraw({ id }: { id: number }) {
   const modal = useDisclosure();
@@ -93,9 +96,9 @@ function UpdateWithdraw({ id }: { id: number }) {
               noEmojiRule,
             ]}
           >
-            <Input 
-              placeholder="Jumlah" 
-              maxLength={255} 
+            <Input
+              placeholder="Jumlah"
+              maxLength={255}
               onChange={createEmojiPreventionHandler()}
             />
           </Form.Item>
