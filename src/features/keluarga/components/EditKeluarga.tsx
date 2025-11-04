@@ -17,6 +17,10 @@ import dayjs from "dayjs";
 import { EditIcon } from "lucide-react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import {
+  createEmojiPreventionHandler,
+  noEmojiRule,
+} from "@/utils/emoji-prevention";
 import { toast } from "sonner";
 
 function EditKeluarga({ keluargaId }: { keluargaId: number }) {

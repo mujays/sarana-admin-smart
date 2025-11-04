@@ -21,6 +21,7 @@ import { EditIcon } from "lucide-react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { createEmojiPreventionHandler, noEmojiRule } from "@/utils/emoji-prevention";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import "dayjs/locale/id";
 import { superAdminAuthService } from "@/services/auth/super-admin-auth.service";
@@ -157,8 +158,12 @@ function EditTagihanAdmission({ tagihanId }: { tagihanId: number }) {
               label="Catatan"
               name="keterangan"
               className="w-full mb-2"
+              rules={[noEmojiRule]}
             >
-              <Input.TextArea placeholder="Tulis catatan..." />
+              <Input.TextArea 
+                placeholder="Tulis catatan..." 
+                onChange={createEmojiPreventionHandler()}
+              />
             </Form.Item>
           </div>
         </Form>

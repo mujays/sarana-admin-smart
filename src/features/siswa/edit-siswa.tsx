@@ -12,6 +12,10 @@ import errorResponse from "@/utils/error-response";
 import { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import dayjs from "dayjs";
+import {
+  createEmojiPreventionHandler,
+  noEmojiRule,
+} from "@/utils/emoji-prevention";
 
 function EditSiswaPage() {
   const [form] = Form.useForm();
@@ -123,9 +127,16 @@ function EditSiswaPage() {
               label="Nama"
               name="nama"
               className="mb-2"
-              rules={[{ required: true, message: "nama harus diisi" }]}
+              rules={[
+                { required: true, message: "nama harus diisi" },
+                noEmojiRule,
+              ]}
             >
-              <Input placeholder="Nama" maxLength={255} />
+              <Input
+                placeholder="Nama"
+                maxLength={255}
+                onChange={createEmojiPreventionHandler()}
+              />
             </Form.Item>
 
             <Form.Item
@@ -171,18 +182,30 @@ function EditSiswaPage() {
               className="mb-2"
               rules={[
                 { required: true, message: "Nama ibu kandung harus diisi" },
+                noEmojiRule,
               ]}
             >
-              <Input placeholder="Ibu Kandung" maxLength={255} />
+              <Input
+                placeholder="Ibu Kandung"
+                maxLength={255}
+                onChange={createEmojiPreventionHandler()}
+              />
             </Form.Item>
 
             <Form.Item
               className="mb-2"
               label="Agama"
               name="agama"
-              rules={[{ required: true, message: "agama harus diisi" }]}
+              rules={[
+                { required: true, message: "agama harus diisi" },
+                noEmojiRule,
+              ]}
             >
-              <Input placeholder="Agama" maxLength={255} />
+              <Input
+                placeholder="Agama"
+                maxLength={255}
+                onChange={createEmojiPreventionHandler()}
+              />
             </Form.Item>
 
             <Form.Item
@@ -248,9 +271,14 @@ function EditSiswaPage() {
                 className="w-full mb-2"
                 rules={[
                   { required: true, message: "kewarganegaraan harus diisi" },
+                  noEmojiRule,
                 ]}
               >
-                <Input placeholder="kewarganegaraan" maxLength={255} />
+                <Input
+                  placeholder="kewarganegaraan"
+                  maxLength={255}
+                  onChange={createEmojiPreventionHandler()}
+                />
               </Form.Item>
             </div>
 
@@ -272,17 +300,32 @@ function EditSiswaPage() {
               label="Asal Sekolah"
               name="lulusan_dari"
               className="w-full mb-2"
-              rules={[{ required: true, message: "asal sekolah harus diisi" }]}
+              rules={[
+                { required: true, message: "asal sekolah harus diisi" },
+                noEmojiRule,
+              ]}
             >
-              <Input placeholder="Asal Sekolah" maxLength={255} />
+              <Input
+                placeholder="Asal Sekolah"
+                maxLength={255}
+                onChange={createEmojiPreventionHandler()}
+              />
             </Form.Item>
 
             <Form.Item
               label="Alamat Sekolah Asal"
               name="alamat_sekolah_asal"
-              rules={[{ required: true, message: "alamat harus diisi" }]}
+              rules={[
+                { required: true, message: "alamat harus diisi" },
+                noEmojiRule,
+              ]}
             >
-              <Input.TextArea rows={5} maxLength={255} placeholder="Alamat" />
+              <Input.TextArea
+                rows={5}
+                maxLength={255}
+                placeholder="Alamat"
+                onChange={createEmojiPreventionHandler()}
+              />
             </Form.Item>
 
             <div className="flex justify-end">

@@ -19,6 +19,10 @@ import { PlusIcon } from "lucide-react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import {
+  createEmojiPreventionHandler,
+  noEmojiRule,
+} from "@/utils/emoji-prevention";
 
 function AddTagihan() {
   const modal = useDisclosure();
@@ -121,9 +125,16 @@ function AddTagihan() {
             label="Nama Tagihan"
             name="tagihan"
             className="w-full mb-2"
-            rules={[{ required: true, message: "Nama harus diisi" }]}
+            rules={[
+              { required: true, message: "Nama harus diisi" },
+              noEmojiRule,
+            ]}
           >
-            <Input placeholder="Seragam, SPP" maxLength={255} />
+            <Input
+              placeholder="Seragam, SPP"
+              maxLength={255}
+              onChange={createEmojiPreventionHandler()}
+            />
           </Form.Item>
 
           <Form.Item

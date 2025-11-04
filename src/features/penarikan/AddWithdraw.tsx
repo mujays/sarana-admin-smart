@@ -9,6 +9,7 @@ import { PlusIcon } from "lucide-react";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { toast } from "sonner";
+import { createEmojiPreventionHandler, noEmojiRule } from "@/utils/emoji-prevention";
 
 function AddWithdraw({ isPending }: { isPending: boolean }) {
   const modal = useDisclosure();
@@ -88,9 +89,16 @@ function AddWithdraw({ isPending }: { isPending: boolean }) {
             label="Jumlah"
             name="jumlah"
             className="w-full mb-2"
-            rules={[{ required: true, message: "Jumlah harus diisi" }]}
+            rules={[
+              { required: true, message: "Jumlah harus diisi" },
+              noEmojiRule,
+            ]}
           >
-            <Input placeholder="Jumlah" maxLength={255} />
+            <Input 
+              placeholder="Jumlah" 
+              maxLength={255} 
+              onChange={createEmojiPreventionHandler()}
+            />
           </Form.Item>
         </Form>
         <p className="text-gray-500">

@@ -8,6 +8,7 @@ import EditTagihanAdmission from "../components/EditTagihanAdmission";
 import { DeleteTagihanAdmission } from "../components/DeleteTagihanAdmission";
 import { CompleteTagihanAdmission } from "../components/CompletTagihanAdmission";
 import PaymentTagihanAdmission from "../components/PaymentTagihanAdmission";
+import { useSuperAdmin } from "@/hooks/useSuperAdmin";
 
 type Props = {
   page: number;
@@ -16,6 +17,7 @@ type Props = {
 };
 
 function useListTagihanAdmission({ limit, page, siswaId }: Props) {
+  const { isSuperAdmin } = useSuperAdmin();
   const { data: bills, isLoading } = useQuery({
     queryKey: ["BILLS_ADMISSION", page, limit, siswaId],
     enabled: !!siswaId,
@@ -99,6 +101,8 @@ function useListTagihanAdmission({ limit, page, siswaId }: Props) {
       render: (value = "", record) =>
         value.toLowerCase() !== "belum lunas" ? (
           <Tag color="green">Lunas</Tag>
+        ) : value.toLowerCase() === "partial" ? (
+          <Tag color="orange">Masih Proses</Tag>
         ) : (
           <Tag color="red">Belum Lunas</Tag>
         ),
@@ -110,11 +114,15 @@ function useListTagihanAdmission({ limit, page, siswaId }: Props) {
         return (
           <div key={record.id} className="flex gap-[8px]">
             <DeleteTagihanAdmission tagihanId={record.id} />
-            <EditTagihanAdmission tagihanId={record.id} />
-            {record.status.toLowerCase() !== "belum lunas" ? null : (
-              <CompleteTagihanAdmission tagihan={record} />
-            )}
-            <PaymentTagihanAdmission tagihanId={record.id} />
+            {isSuperAdmin ? (
+              <>
+                <EditTagihanAdmission tagihanId={record.id} />
+                {record.status.toLowerCase() !== "belum lunas" ? null : (
+                  <CompleteTagihanAdmission tagihan={record} />
+                )}
+                <PaymentTagihanAdmission tagihanId={record.id} />
+              </>
+            ) : null}
           </div>
         );
       },

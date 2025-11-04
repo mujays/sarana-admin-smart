@@ -9,6 +9,7 @@ import { EditIcon } from "lucide-react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { createEmojiPreventionHandler, noEmojiRule } from "@/utils/emoji-prevention";
 
 function EditWali({ waliId }: { waliId: number }) {
   const modal = useDisclosure();
@@ -116,9 +117,16 @@ function EditWali({ waliId }: { waliId: number }) {
             label="Nama"
             name="nama"
             className="w-full mb-2"
-            rules={[{ required: true, message: "Nama harus diisi" }]}
+            rules={[
+              { required: true, message: "Nama harus diisi" },
+              noEmojiRule,
+            ]}
           >
-            <Input placeholder="Nama" maxLength={255} />
+            <Input 
+              placeholder="Nama" 
+              maxLength={255} 
+              onChange={createEmojiPreventionHandler()}
+            />
           </Form.Item>
           <div className="flex gap-2">
             <Form.Item
@@ -134,9 +142,16 @@ function EditWali({ waliId }: { waliId: number }) {
             label="Hubungan"
             name="hubungan"
             className="w-full mb-2"
-            rules={[{ required: true, message: "Hubungan harus diisi" }]}
+            rules={[
+              { required: true, message: "Hubungan harus diisi" },
+              noEmojiRule,
+            ]}
           >
-            <Input placeholder="Hubungan" maxLength={255} />
+            <Input 
+              placeholder="Hubungan" 
+              maxLength={255} 
+              onChange={createEmojiPreventionHandler()}
+            />
           </Form.Item>
 
           <div className="flex gap-2">
@@ -144,9 +159,16 @@ function EditWali({ waliId }: { waliId: number }) {
               label="Pekerjaan"
               name="pekerjaan"
               className="mb-2 w-full"
-              rules={[{ required: true, message: "Pekerjaan harus diisi" }]}
+              rules={[
+                { required: true, message: "Pekerjaan harus diisi" },
+                noEmojiRule,
+              ]}
             >
-              <Input placeholder="Pekerjaan" maxLength={255} />
+              <Input 
+                placeholder="Pekerjaan" 
+                maxLength={255} 
+                onChange={createEmojiPreventionHandler()}
+              />
             </Form.Item>
             <Form.Item
               label="Gaji"

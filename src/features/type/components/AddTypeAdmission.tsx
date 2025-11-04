@@ -15,6 +15,10 @@ import { AxiosError } from "axios";
 import { PlusIcon } from "lucide-react";
 import { useState } from "react";
 import customParseFormat from "dayjs/plugin/customParseFormat";
+import {
+  createEmojiPreventionHandler,
+  noEmojiRule,
+} from "@/utils/emoji-prevention";
 import dayjs from "dayjs";
 import "dayjs/locale/id";
 import TypeServices from "@/services/type";
@@ -106,9 +110,16 @@ function AddTypeAdmission() {
             label="Nama"
             name="nama"
             className="w-full mb-2"
-            rules={[{ required: true, message: "Nama harus diisi" }]}
+            rules={[
+              { required: true, message: "Nama harus diisi" },
+              noEmojiRule,
+            ]}
           >
-            <Input placeholder="Nama" maxLength={255} />
+            <Input
+              placeholder="Nama"
+              maxLength={255}
+              onChange={createEmojiPreventionHandler()}
+            />
           </Form.Item>
 
           <Form.Item

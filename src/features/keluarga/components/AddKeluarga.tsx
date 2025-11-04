@@ -15,7 +15,11 @@ import { AxiosError } from "axios";
 import dayjs from "dayjs";
 import { PlusIcon } from "lucide-react";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import {
+  createEmojiPreventionHandler,
+  noEmojiRule,
+} from "@/utils/emoji-prevention";
 import { toast } from "sonner";
 import useListKeluarga from "../hooks/useListKeluarga";
 
@@ -84,9 +88,16 @@ function AddKeluarga() {
               label="Nama"
               name="nama"
               className="w-full mb-2"
-              rules={[{ required: true, message: "Nama harus diisi" }]}
+              rules={[
+                { required: true, message: "Nama harus diisi" },
+                noEmojiRule,
+              ]}
             >
-              <Input placeholder="Nama" maxLength={255} />
+              <Input
+                placeholder="Nama"
+                maxLength={255}
+                onChange={createEmojiPreventionHandler()}
+              />
             </Form.Item>
             <Form.Item
               name="tanggal_lahir"
@@ -174,9 +185,16 @@ function AddKeluarga() {
               label="Hubungan Lainnya"
               name="hubungan"
               className="w-full mb-2"
-              rules={[{ required: true, message: "Hubungan harus diisi" }]}
+              rules={[
+                { required: true, message: "Hubungan harus diisi" },
+                noEmojiRule,
+              ]}
             >
-              <Input placeholder="Hubungan" maxLength={255} />
+              <Input
+                placeholder="Hubungan"
+                maxLength={255}
+                onChange={createEmojiPreventionHandler()}
+              />
             </Form.Item>
           )}
 
@@ -185,9 +203,16 @@ function AddKeluarga() {
               label="Pekerjaan"
               name="pekerjaan"
               className="mb-2 w-full"
-              rules={[{ required: true, message: "Pekerjaan harus diisi" }]}
+              rules={[
+                { required: true, message: "Pekerjaan harus diisi" },
+                noEmojiRule,
+              ]}
             >
-              <Input placeholder="Pekerjaan" maxLength={255} />
+              <Input
+                placeholder="Pekerjaan"
+                maxLength={255}
+                onChange={createEmojiPreventionHandler()}
+              />
             </Form.Item>
             <Form.Item label="Gaji" name="gaji" className="mb-2 w-full">
               <Input
@@ -205,9 +230,16 @@ function AddKeluarga() {
             label="Pendidikan"
             name="pendidikan"
             className="mb-2"
-            rules={[{ required: true, message: "Pendidikan harus diisi" }]}
+            rules={[
+              { required: true, message: "Pendidikan harus diisi" },
+              noEmojiRule,
+            ]}
           >
-            <Input placeholder="Pendidikan" maxLength={255} />
+            <Input
+              placeholder="Pendidikan"
+              maxLength={255}
+              onChange={createEmojiPreventionHandler()}
+            />
           </Form.Item>
           <Form.Item
             label="Nomor Telepon"
@@ -223,21 +255,44 @@ function AddKeluarga() {
               label="Agama"
               name="agama"
               className="mb-2 w-full"
-              rules={[{ required: true, message: "Agama harus diisi" }]}
+              rules={[
+                { required: true, message: "Agama harus diisi" },
+                noEmojiRule,
+              ]}
             >
-              <Input placeholder="Agama" maxLength={255} />
+              <Input
+                placeholder="Agama"
+                maxLength={255}
+                onChange={createEmojiPreventionHandler()}
+              />
             </Form.Item>
-            <Form.Item label="Suku" name="suku" className="mb-2 w-full">
-              <Input placeholder="Suku" maxLength={255} />
+            <Form.Item
+              label="Suku"
+              name="suku"
+              className="mb-2 w-full"
+              rules={[noEmojiRule]}
+            >
+              <Input
+                placeholder="Suku"
+                maxLength={255}
+                onChange={createEmojiPreventionHandler()}
+              />
             </Form.Item>
           </div>
           <Form.Item
             label="Alamat"
             name="alamat"
             className="mb-2"
-            rules={[{ required: true, message: "Alamat harus diisi" }]}
+            rules={[
+              { required: true, message: "Alamat harus diisi" },
+              noEmojiRule,
+            ]}
           >
-            <Input.TextArea placeholder="Alamat" maxLength={255} />
+            <Input.TextArea
+              placeholder="Alamat"
+              maxLength={255}
+              onChange={createEmojiPreventionHandler()}
+            />
           </Form.Item>
         </Form>
       </Modal>

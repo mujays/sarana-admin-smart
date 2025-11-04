@@ -9,6 +9,10 @@ import { PlusIcon } from "lucide-react";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { toast } from "sonner";
+import {
+  createEmojiPreventionHandler,
+  noEmojiRule,
+} from "@/utils/emoji-prevention";
 
 function AddType() {
   const modal = useDisclosure();
@@ -74,17 +78,31 @@ function AddType() {
             label="Nama"
             name="name"
             className="w-full mb-2"
-            rules={[{ required: true, message: "Nama harus diisi" }]}
+            rules={[
+              { required: true, message: "Nama harus diisi" },
+              noEmojiRule,
+            ]}
           >
-            <Input placeholder="Nama" maxLength={255} />
+            <Input
+              placeholder="Nama"
+              maxLength={255}
+              onChange={createEmojiPreventionHandler()}
+            />
           </Form.Item>
           <Form.Item
             label="Kode"
             name="code"
             className="w-full mb-2"
-            rules={[{ required: true, message: "Kode harus diisi" }]}
+            rules={[
+              { required: true, message: "Kode harus diisi" },
+              noEmojiRule,
+            ]}
           >
-            <Input placeholder="Kode" maxLength={255} />
+            <Input
+              placeholder="Kode"
+              maxLength={255}
+              onChange={createEmojiPreventionHandler()}
+            />
           </Form.Item>
           <Form.Item
             className="mb-2"

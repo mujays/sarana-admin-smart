@@ -9,6 +9,10 @@ import { EditIcon } from "lucide-react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import {
+  createEmojiPreventionHandler,
+  noEmojiRule,
+} from "@/utils/emoji-prevention";
 
 function EditKelas({ kelasId }: { kelasId: number }) {
   const modal = useDisclosure();
@@ -89,18 +93,32 @@ function EditKelas({ kelasId }: { kelasId: number }) {
             label="Nama"
             name="nama"
             className="w-full mb-2"
-            rules={[{ required: true, message: "Nama harus diisi" }]}
+            rules={[
+              { required: true, message: "Nama harus diisi" },
+              noEmojiRule,
+            ]}
           >
-            <Input placeholder="Nama Kelas" maxLength={255} />
+            <Input
+              placeholder="Nama Kelas"
+              maxLength={255}
+              onChange={createEmojiPreventionHandler()}
+            />
           </Form.Item>
 
           <Form.Item
             label="Deskripsi"
             name="description"
             className="w-full mb-2"
-            rules={[{ required: true, message: "Deskripsi harus diisi" }]}
+            rules={[
+              { required: true, message: "Deskripsi harus diisi" },
+              noEmojiRule,
+            ]}
           >
-            <Input.TextArea placeholder="Tulis deskripsi..." maxLength={255} />
+            <Input.TextArea
+              placeholder="Tulis deskripsi..."
+              maxLength={255}
+              onChange={createEmojiPreventionHandler()}
+            />
           </Form.Item>
 
           <Form.Item label="Kelas" name="tingkatan_id" className="mb-2">
