@@ -10,6 +10,7 @@ import { Copy } from "lucide-react";
 import { toast } from "sonner";
 import { useRouter } from "next/router";
 import moment from "moment";
+import { DeletePpdb } from "../components/delete-ppdb";
 
 type Props = {
   page: number;
@@ -35,6 +36,8 @@ function useListPPDB({ limit, page, search, status }: Props) {
         search,
         type,
         status,
+        by: "desc",
+        order: "updated_at",
       });
       return response;
     },
@@ -60,7 +63,9 @@ function useListPPDB({ limit, page, search, status }: Props) {
       title: "Nama Siswa",
       dataIndex: "nama_siswa",
       render: (value = "", record) => (
-        <Text style={{ textTransform: "uppercase" }}>{value}</Text>
+        <Text style={{ textTransform: "uppercase", whiteSpace: "nowrap" }}>
+          {value}
+        </Text>
       ),
     },
     {
@@ -99,15 +104,26 @@ function useListPPDB({ limit, page, search, status }: Props) {
       title: "Nama Wali",
       dataIndex: "nama_orang_tua",
       render: (value = "", record) => (
-        <Text style={{ textTransform: "uppercase" }}>{value}</Text>
+        <Text style={{ textTransform: "uppercase", whiteSpace: "nowrap" }}>
+          {value}
+        </Text>
       ),
     },
     {
-      title: "Tanggal Daftar",
+      title: "Tanggal Pengisian Buku Tamu",
       dataIndex: "created_at",
       render: (value = "", record) => (
-        <Text style={{ textTransform: "uppercase" }}>
+        <Text style={{ textTransform: "uppercase", whiteSpace: "nowrap" }}>
           {moment(record.created_at).format("LLLL")}
+        </Text>
+      ),
+    },
+    {
+      title: "Tanggal Pembaruan Status",
+      dataIndex: "updated_at",
+      render: (value = "", record) => (
+        <Text style={{ textTransform: "uppercase", whiteSpace: "nowrap" }}>
+          {moment(record.updated_at).format("LLLL")}
         </Text>
       ),
     },
@@ -127,7 +143,12 @@ function useListPPDB({ limit, page, search, status }: Props) {
       key: "",
       render: (value, record, index) => {
         if (record.status === "PENDING_PAYMENT") {
-          return <AcceptStudent ppdbId={record.id} />;
+          return (
+            <div className="flex gap-2">
+              <AcceptStudent ppdbId={record.id} />
+              <DeletePpdb ppdbId={record.id} />
+            </div>
+          );
         }
         if (record.status === "PENDING_INPUT") {
           return (

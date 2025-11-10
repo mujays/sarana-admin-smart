@@ -48,6 +48,19 @@ export default function DetailPPDB() {
     }
   };
 
+  const downloadImage = () => {
+    const avatarUrl = siswa?.data_siswa?.avatar;
+    if (avatarUrl) {
+      const link = document.createElement("a");
+      link.href = avatarUrl;
+      link.download = `${siswa?.data_siswa?.nama || "siswa"}-foto.jpg`;
+      link.target = "_blank";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  };
+
   const { data: siswa, isLoading: isLoadingDetail } = useQuery({
     queryKey: ["PPDB", router.query?.siswaId],
     enabled: !!siswaId,
@@ -222,7 +235,7 @@ export default function DetailPPDB() {
                       <p>: {siswa?.data_siswa?.telp_rumah || "-"}</p>
                     </div>
                   </div>
-                  <div className="basis-3/12 flex flex-col items-center">
+                  <div className="basis-3/12 flex flex-col items-center gap-3">
                     <Image
                       src={siswa?.data_siswa?.avatar || ""}
                       width={500}
@@ -230,6 +243,11 @@ export default function DetailPPDB() {
                       className="w-[100px]"
                       alt="Siswa"
                     />
+                    {siswa?.data_siswa?.avatar && (
+                      <Button size="small" onClick={downloadImage}>
+                        Download Gambar
+                      </Button>
+                    )}
                   </div>
                 </div>
               </div>
@@ -305,7 +323,7 @@ export default function DetailPPDB() {
                                   {item.nama}
                                 </td>
                                 <td className="px-4 py-1 border pb-2">
-                                  {item.nama}
+                                  {item?.jenis_kelamin}
                                 </td>
                                 <td className="px-4 py-1 border pb-2">
                                   {item.pendidikan}

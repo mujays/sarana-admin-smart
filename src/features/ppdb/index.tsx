@@ -2,7 +2,8 @@ import { Title } from "@/components/title";
 import { AuthenticatedLayout } from "@/layouts/AuthenticatedLayout";
 import classNames from "classnames";
 import Head from "next/head";
-import { ReactElement, useState } from "react";
+import { ReactElement, useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import { Breadcrumb } from "../navigation/components/breadcrumb";
 import { Input, Table } from "antd";
 import useListPPDB from "./hooks/useListPpdb";
@@ -11,7 +12,7 @@ import { SearchIcon } from "lucide-react";
 
 const statusData = [
   {
-    name: "Pembayaran",
+    name: "Buku Tamu",
     value: "PENDING_PAYMENT",
   },
   {
@@ -29,12 +30,24 @@ const statusData = [
 ];
 
 export default function PPDBPage() {
+  const router = useRouter();
   const [pagination, setPagination] = useState({
     page: 1,
     pageSize: 20,
   });
   const [search, setSearch] = useState("");
-  const [selectedStatus, setSelectedStatus] = useState("PENDING_PAYMENT");
+  const [searchParams, setSearchParams] = useState({
+    status: "PENDING_PAYMENT",
+  });
+
+  useEffect(() => {
+    if (router.query.status) {
+      setSearchParams((prev) => ({
+        ...prev,
+        status: String(router.query.status),
+      }));
+    }
+  }, [router.query.status]);
 
   const debounceSearch = useDebounce(search, 300);
 
@@ -42,7 +55,7 @@ export default function PPDBPage() {
     limit: pagination.pageSize,
     page: pagination.page,
     search: debounceSearch,
-    status: selectedStatus,
+    status: searchParams.status,
   });
 
   return (
@@ -77,7 +90,15 @@ export default function PPDBPage() {
             <div
               key={status.value}
               onClick={() => {
-                setSelectedStatus(status.value);
+                setSearchParams((prev) => ({ ...prev, status: status.value }));
+                router.replace(
+                  {
+                    pathname: router.pathname,
+                    query: { ...router.query, status: status.value },
+                  },
+                  undefined,
+                  { shallow: true },
+                );
                 setPagination({
                   page: 1,
                   pageSize: 20,
@@ -85,7 +106,8 @@ export default function PPDBPage() {
               }}
               className={classNames(
                 "cursor-pointer rounded px-3 py-1 w-[180px] text-center",
-                status.value === selectedStatus && "bg-white font-semibold",
+                status.value === searchParams.status &&
+                  "bg-white font-semibold",
               )}
             >
               {status.name}
