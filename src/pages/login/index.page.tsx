@@ -18,7 +18,6 @@ function Login() {
             email: decodeURIComponent(router.query.email as string),
           },
         );
-        console.log("SUCCESS LOGIN");
         Cookies.set("session_kesiswaan", res.data.data.token);
         window.location.href = "/home";
         return;

@@ -14,9 +14,7 @@ axiosConfigFinance.interceptors.request.use(
   async function (config) {
     const superAdminCookie = Cookies.get("session_keuangan_super_admin");
     const { isSuperAdmin } = useSuperAdminStore.getState();
-    console.log({ isSuperAdmin, superAdminCookie });
     if (isSuperAdmin && superAdminCookie) {
-      console.log("SUPER");
       config.headers.Authorization = "Bearer " + superAdminCookie;
     } else {
       const session = await getTokenKeuangan();

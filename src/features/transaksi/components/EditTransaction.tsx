@@ -40,7 +40,6 @@ function EditTransaction({ transactionId }: { transactionId: number }) {
   const onSubmit = async (val: any) => {
     try {
       setLoading(true);
-      console.log({ val });
       await superAdminAuthService.editTransaction(transactionId, {
         ...val,
         catatan: val?.catatan || "-",
@@ -70,7 +69,6 @@ function EditTransaction({ transactionId }: { transactionId: number }) {
       form.setFieldValue("catatan", transaction.data.catatan);
     }
   }, [transaction, modal]);
-  console.log({ transaction });
   return (
     <Tooltip title="Edit Transaksi">
       <Button

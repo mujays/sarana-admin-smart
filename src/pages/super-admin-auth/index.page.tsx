@@ -87,7 +87,6 @@ function SuperAdminAuth() {
 
     return { question, answer };
   };
-  console.log(adminSuperId);
 
   useEffect(() => {
     setMathCaptcha(generateMathCaptcha());
