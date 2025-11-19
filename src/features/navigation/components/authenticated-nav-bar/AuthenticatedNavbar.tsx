@@ -12,7 +12,7 @@ import { Paragraph } from "@/components/paragraph";
 import { Badge, Button, Popover } from "antd";
 import classNames from "classnames";
 import Cookies from "js-cookie";
-import { ArrowLeftRightIcon, ChevronLeft, User, User2Icon } from "lucide-react";
+import { ArrowLeftRightIcon, ChevronLeft, User2Icon } from "lucide-react";
 import { useRouter } from "next/router";
 import { useQuery } from "@tanstack/react-query";
 import AuthService from "@/services/auth";
