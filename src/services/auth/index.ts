@@ -7,6 +7,10 @@ const AuthService = {
     const response = await axiosConfig.get<BaseResponse<TUser>>("/auth");
     return response.data;
   },
+  healthCheck: async () => {
+    const response = await axiosConfig.get<{ status: string }>("/health");
+    return response.data;
+  },
 };
 
 export default AuthService;

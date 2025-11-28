@@ -18,6 +18,8 @@ export const useSuperAdminStore = create<SuperAdminState>()(
   persist(
     (set, get) => ({
       isSuperAdmin: false,
+
+      
       superAdminToken: null,
       superAdminEmail: null,
 
