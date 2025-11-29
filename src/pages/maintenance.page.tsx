@@ -12,7 +12,11 @@ export default function MaintenancePage() {
     setIsRetrying(true);
     try {
       const response = await AuthService.healthCheck();
-      if (response?.status.toLowerCase() === "ok") {
+      const responseFinance = await AuthService.healthCheckKeuangan();
+      if (
+        response?.status.toLowerCase() === "ok" &&
+        responseFinance?.status.toLowerCase() === "ok"
+      ) {
         router.push("/");
       }
     } catch (error) {
