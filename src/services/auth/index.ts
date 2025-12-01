@@ -9,13 +9,11 @@ const AuthService = {
     return response.data;
   },
   healthCheck: async () => {
-    const response = await axiosConfig.get<{ status: string }>("/health");
+    const response = await axiosConfig.get("/health");
     return response.data;
   },
   healthCheckKeuangan: async () => {
-    const response = await axiosConfigFinance.get<{ status: string }>(
-      "/health",
-    );
+    const response = await axiosConfigFinance.get("/health");
     return response.data;
   },
 };

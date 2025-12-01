@@ -24,16 +24,16 @@ export const HealthCheckProvider = ({ children }: THealthCheckProvider) => {
         setIsChecking(true);
 
         // Check both APIs in parallel
-        const [mainApiResult, financeApiResult] = await Promise.allSettled([
+        const [mainApiResult, financeApiResult] = await Promise.all([
           AuthService.healthCheck(),
           AuthService.healthCheckKeuangan(),
         ]);
 
         // Check if both APIs are healthy
-        const isMainApiHealthy = mainApiResult?.status.toLowerCase() === "ok";
+        const isMainApiHealthy = mainApiResult?.status?.toLowerCase() === "ok";
 
         const isFinanceApiHealthy =
-          financeApiResult?.status.toLowerCase() === "ok";
+          financeApiResult?.status?.toLowerCase() === "ok";
 
         // If either API fails, go to maintenance
         if (isMainApiHealthy && isFinanceApiHealthy) {
@@ -44,12 +44,12 @@ export const HealthCheckProvider = ({ children }: THealthCheckProvider) => {
             financeApi: financeApiResult,
           });
           setIsHealthy(false);
-          window.location.href = "/maintenance";
+          // window.location.href = "/maintenance";
         }
       } catch (error) {
         console.error("Health check failed:", error);
         setIsHealthy(false);
-        window.location.href = "/maintenance";
+        // window.location.href = "/maintenance";
       } finally {
         setIsChecking(false);
       }
