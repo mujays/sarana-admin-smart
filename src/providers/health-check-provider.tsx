@@ -44,12 +44,12 @@ export const HealthCheckProvider = ({ children }: THealthCheckProvider) => {
             financeApi: financeApiResult,
           });
           setIsHealthy(false);
-          // window.location.href = "/maintenance";
+          window.location.href = "/maintenance";
         }
       } catch (error) {
         console.error("Health check failed:", error);
         setIsHealthy(false);
-        // window.location.href = "/maintenance";
+        window.location.href = "/maintenance";
       } finally {
         setIsChecking(false);
       }
