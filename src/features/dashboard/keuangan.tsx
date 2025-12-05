@@ -74,7 +74,7 @@ export default function DashboardKeuangan() {
   });
 
   const pieSiswa = {
-    series: [countSiswa?.data[0].jumlah_sd, countSiswa?.data[0].jumlah_smp],
+    series: [countSiswa?.data[0]?.jumlah_sd, countSiswa?.data[0]?.jumlah_smp],
     options: {
       chart: {
         type: "pie",
