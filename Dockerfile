@@ -16,16 +16,16 @@ ENV NEXT_PUBLIC_URL_PORTAL=${NEXT_PUBLIC_URL_PORTAL}
 ENV NEXT_PUBLIC_API_MOCKING=${NEXT_PUBLIC_API_MOCKING}
 
 COPY package*.json ./
-RUN npm install
+
+RUN npm config set registry https://registry.npmjs.org/ \
+    && npm install --fetch-retries=5 --fetch-retry-factor=2 --fetch-retry-maxtimeout=300000
 
 COPY . .
 
 RUN npm run build
 
-# Buang semua devDependencies
 RUN npm prune --omit=dev
 
-# Stage 2: Runner (lightweight)
 FROM node:22-alpine AS runner
 
 WORKDIR /app
@@ -36,13 +36,13 @@ ARG NEXT_PUBLIC_API_SOURCE_FINANCE
 ARG NEXT_PUBLIC_API_SOURCE_PERPUS
 ARG NEXT_PUBLIC_URL_PORTAL
 ARG NEXT_PUBLIC_API_MOCKING
+
 ENV NEXT_PUBLIC_API_SOURCE=${NEXT_PUBLIC_API_SOURCE}
 ENV NEXT_PUBLIC_API_SOURCE_FINANCE=${NEXT_PUBLIC_API_SOURCE_FINANCE}
 ENV NEXT_PUBLIC_API_SOURCE_PERPUS=${NEXT_PUBLIC_API_SOURCE_PERPUS}
 ENV NEXT_PUBLIC_URL_PORTAL=${NEXT_PUBLIC_URL_PORTAL}
 ENV NEXT_PUBLIC_API_MOCKING=${NEXT_PUBLIC_API_MOCKING}
 
-# Copy only what's needed
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/package*.json ./
@@ -50,5 +50,4 @@ COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/next.config.js ./next.config.js
 
 EXPOSE 3000
-
 CMD ["npm", "start"]
