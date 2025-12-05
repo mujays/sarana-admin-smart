@@ -56,7 +56,7 @@ export const HealthCheckProvider = ({ children }: THealthCheckProvider) => {
     };
 
     checkHealth();
-  }, [router]);
+  }, []);
 
   // Show loading state while checking
   if (isChecking) {
