@@ -1,6 +1,5 @@
 import { useDisclosure } from "@/hooks/useDisclosure";
 import SiswaServices from "@/services/siswa";
-import TagihanService from "@/services/tagihan";
 import errorResponse from "@/utils/error-response";
 import { useQueryClient } from "@tanstack/react-query";
 import { Button, Modal, Tooltip, Typography } from "antd";
@@ -9,7 +8,7 @@ import { TrashIcon } from "lucide-react";
 import * as React from "react";
 import { toast } from "sonner";
 
-export function DeletePpdb({ ppdbId }: { ppdbId: number }) {
+export function DeletePindahan({ ppdbId }: { ppdbId: number }) {
   const queryClient = useQueryClient();
   const modal = useDisclosure();
   const [isLoading, setIsLoading] = React.useState(false);
@@ -17,9 +16,9 @@ export function DeletePpdb({ ppdbId }: { ppdbId: number }) {
   async function handleDelete() {
     try {
       setIsLoading(true);
-      await SiswaServices.deletePPDB(ppdbId);
+      await SiswaServices.deletePindahan(ppdbId);
       toast.success("Data berhasil dihapus!");
-      queryClient.invalidateQueries({ queryKey: ["PPDBS"] });
+      queryClient.invalidateQueries({ queryKey: ["PPDBS_PINDAHAN"] });
       modal.onClose();
     } catch (error) {
       errorResponse(error as AxiosError);
@@ -41,7 +40,7 @@ export function DeletePpdb({ ppdbId }: { ppdbId: number }) {
       <Modal
         title={
           <Typography.Title className="font-normal" level={3}>
-            Hapus Data Buku Tamu
+            Hapus Data Siswa Pindahan
           </Typography.Title>
         }
         open={modal.isOpen}
@@ -54,7 +53,7 @@ export function DeletePpdb({ ppdbId }: { ppdbId: number }) {
         onOk={handleDelete}
       >
         <Typography.Text>
-          Apakah yakin ingin menghapus data buku tamu?
+          Apakah yakin ingin menghapus data siswa pindahan?
         </Typography.Text>
       </Modal>
     </Tooltip>

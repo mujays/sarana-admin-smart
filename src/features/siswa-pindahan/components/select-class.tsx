@@ -47,6 +47,7 @@ export function SelectClass({ ppdb }: { ppdb: TPpdb }) {
   return (
     <Tooltip title="Lengkapi">
       <Button
+        data-select-id={ppdb.id}
         className="w-full px-3 border"
         type="default"
         onClick={() => modal.onOpen()}

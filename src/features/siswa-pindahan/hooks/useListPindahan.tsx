@@ -2,14 +2,31 @@ import { Text } from "@/components/text";
 import SiswaServices from "@/services/siswa";
 import { TPpdb } from "@/services/siswa/siswa.type";
 import { useQuery } from "@tanstack/react-query";
-import { Button, TableProps, Tag, Tooltip, Typography } from "antd";
+import {
+  Button,
+  TableProps,
+  Tag,
+  Tooltip,
+  Typography,
+  Dropdown,
+  MenuProps,
+} from "antd";
 import { AcceptStudent } from "../components/accept-student";
 import { CompletedStudent } from "../components/completed-student";
-import { Copy } from "lucide-react";
+import {
+  Copy,
+  MoreVertical,
+  Eye,
+  UserCheck,
+  Users,
+  BookOpen,
+  Trash2,
+} from "lucide-react";
 import { toast } from "sonner";
 import { useRouter } from "next/router";
 import { SelectClass } from "../components/select-class";
 import DetailPPDB from "../components/detail-ppdb";
+import { DeletePindahan } from "../components/delete-pindahan";
 import moment from "moment";
 
 type Props = {
@@ -110,87 +127,168 @@ function useListPindahan({ limit, page, search, status }: Props) {
       ),
     },
     {
-      title: "Detail",
-      key: "",
-      render: (value, record, index) => {
-        return (
-          <div key={record.id} className="flex gap-[8px]">
-            <DetailPPDB ppdb={record} />
-          </div>
-        );
-      },
-    },
-    {
       title: "Action",
-      key: "",
+      key: "action",
+      align: "center",
       render: (value, record, index) => {
-        if (record.status === "PENDING_PAYMENT") {
-          return <AcceptStudent ppdbId={record.id} />;
-        }
-        if (record.status === "PENDING_INPUT") {
-          return (
-            <Tooltip title="Salin Link Formulir">
-              <Button
-                icon={
-                  <Copy className="w-5 h-5 text-green-500 cursor-pointer" />
+        const getMenuItems = (): MenuProps["items"] => {
+          const items: MenuProps["items"] = [
+            {
+              key: "detail",
+              label: "Lihat Detail",
+              icon: <Eye className="w-4 h-4" />,
+              onClick: () => {
+                const detailButton = document.querySelector(
+                  `[data-ppdb-id="${record.id}"]`,
+                ) as HTMLButtonElement;
+                if (detailButton) {
+                  detailButton.click();
                 }
-                onClick={async () => {
+              },
+            },
+          ];
+
+          if (record.status === "PENDING_PAYMENT") {
+            items.push(
+              {
+                key: "accept",
+                label: "Konfirmasi Pembayaran",
+                icon: <UserCheck className="w-4 h-4" />,
+                onClick: () => {
+                  const acceptButton = document.querySelector(
+                    `[data-accept-id="${record.id}"]`,
+                  ) as HTMLButtonElement;
+                  if (acceptButton) {
+                    acceptButton.click();
+                  }
+                },
+              },
+              {
+                key: "delete",
+                label: "Hapus",
+                icon: <Trash2 className="w-4 h-4" />,
+                danger: true,
+                onClick: () => {
+                  const deleteButton = document.querySelector(
+                    `[data-delete-id="${record.id}"]`,
+                  ) as HTMLButtonElement;
+                  if (deleteButton) {
+                    deleteButton.click();
+                  }
+                },
+              },
+            );
+          }
+
+          if (record.status === "PENDING_INPUT") {
+            items.push({
+              key: "copy-form",
+              label: "Salin Link Formulir",
+              icon: <Copy className="w-4 h-4" />,
+              onClick: async () => {
+                await navigator.clipboard.writeText(
+                  `https://smart.sch.id/formulir-siswa?token=${record.token}`,
+                );
+                toast.info("Link berhasil di salin");
+              },
+            });
+          }
+
+          if (record.status === "TEST") {
+            items.push(
+              {
+                key: "complete",
+                label: "Luluskan Tes",
+                icon: <UserCheck className="w-4 h-4" />,
+                onClick: () => {
+                  const completeButton = document.querySelector(
+                    `[data-complete-id="${record.id}"]`,
+                  ) as HTMLButtonElement;
+                  if (completeButton) {
+                    completeButton.click();
+                  }
+                },
+              },
+              {
+                key: "profile",
+                label: "Profil Siswa",
+                icon: <Users className="w-4 h-4" />,
+                onClick: () => router.push(`${router.pathname}/${record.id}`),
+              },
+            );
+          }
+
+          if (record.status === "SELECT_CLASS") {
+            items.push({
+              key: "select-class",
+              label: "Pilih Kelas",
+              icon: <BookOpen className="w-4 h-4" />,
+              onClick: () => {
+                const selectButton = document.querySelector(
+                  `[data-select-id="${record.id}"]`,
+                ) as HTMLButtonElement;
+                if (selectButton) {
+                  selectButton.click();
+                }
+              },
+            });
+          }
+
+          if (record.status === "RE_REGISTER") {
+            items.push(
+              {
+                key: "copy-reregister",
+                label: "Salin Link Daftar Ulang",
+                icon: <Copy className="w-4 h-4" />,
+                onClick: async () => {
                   await navigator.clipboard.writeText(
-                    `https://smart.sch.id/formulir-siswa?token=${record.token}`,
+                    `https://smart.sch.id/daftar-ulang?token=${record.token}`,
                   );
                   toast.info("Link berhasil di salin");
-                }}
-                type="text"
-              ></Button>
-            </Tooltip>
-          );
-        }
-        if (record.status === "TEST") {
-          return (
-            <div className="flex gap-2">
-              <CompletedStudent ppdb={record} />
-              <Button
-                className="px-3 border"
-                type="primary"
-                onClick={() => router.push(`${router.pathname}/${record.id}`)}
-              >
-                Profil Siswa
-              </Button>
-            </div>
-          );
-        }
+                },
+              },
+              {
+                key: "profile",
+                label: "Profil Siswa",
+                icon: <Users className="w-4 h-4" />,
+                onClick: () => router.push(`${router.pathname}/${record.id}`),
+              },
+            );
+          }
 
-        if (record.status === "SELECT_CLASS") {
-          return <SelectClass ppdb={record} />;
-        }
-        if (record.status === "RE_REGISTER") {
-          return (
-            <div className="flex gap-2">
-              <Tooltip title="Salin Link Formulir">
-                <Button
-                  icon={
-                    <Copy className="w-5 h-5 text-green-500 cursor-pointer" />
-                  }
-                  onClick={async () => {
-                    await navigator.clipboard.writeText(
-                      `https://smart.sch.id/daftar-ulang?token=${record.token}`,
-                    );
-                    toast.info("Link berhasil di salin");
-                  }}
-                  type="text"
-                ></Button>
-              </Tooltip>
-              <Button
-                className="px-3 border"
-                type="primary"
-                onClick={() => router.push(`${router.pathname}/${record.id}`)}
-              >
-                Profil Siswa
-              </Button>
+          return items;
+        };
+
+        return (
+          <div className="flex items-center justify-center">
+            {/* Hidden components for triggering actions */}
+            <div style={{ display: "none" }}>
+              <DetailPPDB ppdb={record} />
+              {record.status === "PENDING_PAYMENT" && (
+                <>
+                  <AcceptStudent ppdbId={record.id} />
+                  <DeletePindahan ppdbId={record.id} />
+                </>
+              )}
+              {record.status === "TEST" && <CompletedStudent ppdb={record} />}
+              {record.status === "SELECT_CLASS" && (
+                <SelectClass ppdb={record} />
+              )}
             </div>
-          );
-        }
-        return null;
+
+            <Dropdown
+              menu={{ items: getMenuItems() }}
+              placement="bottomRight"
+              trigger={["click"]}
+            >
+              <Button
+                type="text"
+                icon={<MoreVertical className="w-4 h-4" />}
+                className="border-none shadow-none"
+              />
+            </Dropdown>
+          </div>
+        );
       },
     },
   ];

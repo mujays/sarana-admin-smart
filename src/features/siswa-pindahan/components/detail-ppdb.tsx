@@ -12,6 +12,7 @@ function DetailPPDB({ ppdb }: { ppdb: TPpdb }) {
   return (
     <Tooltip title="Detail">
       <Button
+        data-ppdb-id={ppdb.id}
         icon={<Eye className="w-5 h-5 text-primary-500 cursor-pointer" />}
         onClick={() => {
           modal.onOpen();

@@ -34,6 +34,7 @@ export function AcceptStudent({ ppdbId }: { ppdbId: number }) {
   return (
     <Tooltip title="Konfirmasi">
       <Button
+        data-accept-id={ppdbId}
         className="w-full px-3 border !text-green-500 !border-green-500"
         type="text"
         onClick={() => modal.onOpen()}

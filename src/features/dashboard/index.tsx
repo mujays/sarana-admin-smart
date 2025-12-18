@@ -7,8 +7,10 @@ import Head from "next/head";
 import { Loader2Icon } from "lucide-react";
 import dynamic from "next/dynamic";
 import { ApexOptions } from "apexcharts";
-import { Calendar, Table, TableProps } from "antd";
+import { Calendar, Spin, Table, TableProps } from "antd";
 import { NotificationOutlined } from "@ant-design/icons";
+import TahunAjaranService from "@/services/tahun-ajaran";
+import { useQuery } from "@tanstack/react-query";
 const Chart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
   loading: () => (
@@ -35,13 +37,23 @@ export default function Dashboard() {
     },
   ];
 
+  const { data: countSiswa, isLoading: isLoadingCountSiswa } = useQuery({
+    queryKey: ["COUNT_SISWA"],
+    queryFn: async () => {
+      const response = await TahunAjaranService.get({
+        page_size: 1,
+      });
+      return response;
+    },
+  });
+
   const pieSiswa = {
-    series: [10, 87],
+    series: [countSiswa?.data[0]?.jumlah_sd, countSiswa?.data[0]?.jumlah_smp],
     options: {
       chart: {
         type: "pie",
       },
-      labels: ["Laki - laki", "Perempuan"],
+      labels: ["SD", "SMP"],
       colors: ["#6597fc", "#fc6d65"],
       responsive: [
         {
@@ -71,15 +83,22 @@ export default function Dashboard() {
             <div className="border w-full border-gray-200 space-y-5 rounded-lg p-4">
               <div className="flex justify-between">
                 <p className="font-medium">Jumlah Siswa</p>
-                <p className="text-xl font-medium">90</p>
+                <p className="text-xl font-medium">
+                  {(countSiswa?.data[0]?.jumlah_sd as number) +
+                    (countSiswa?.data[0]?.jumlah_smp as number)}
+                </p>
               </div>
-              <Chart
-                options={pieSiswa.options as ApexOptions}
-                series={pieSiswa.series}
-                type="pie"
-                width={"100%"}
-                height={350}
-              />
+              {isLoadingCountSiswa ? (
+                <Spin />
+              ) : (
+                <Chart
+                  options={pieSiswa.options as ApexOptions}
+                  series={pieSiswa.series as any}
+                  type="pie"
+                  width={"100%"}
+                  height={350}
+                />
+              )}
             </div>
             <div className="border w-full border-gray-200 rounded-lg p-4">
               <div>

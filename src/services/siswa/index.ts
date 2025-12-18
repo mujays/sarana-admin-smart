@@ -32,6 +32,12 @@ const SiswaServices = {
     );
     return response.data;
   },
+  deletePindahan: async (ppdbId: number) => {
+    const response = await axiosConfig.delete<BaseResponse<TPpdb>>(
+      `/form-pindahan/${ppdbId}`,
+    );
+    return response.data;
+  },
   getPPDB: async (params?: any) => {
     const response = await axiosConfig.get<BaseResponsePaginate<TPpdb>>(
       "/form-siswa",

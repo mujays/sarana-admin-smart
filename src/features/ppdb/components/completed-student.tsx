@@ -33,6 +33,7 @@ export function CompletedStudent({ ppdb }: { ppdb: TPpdb }) {
   return (
     <Tooltip title="Lengkapi">
       <Button
+        data-complete-id={ppdb.id}
         className="w-full px-3 border !text-blue-500 !border-blue-500"
         type="text"
         onClick={() => modal.onOpen()}
