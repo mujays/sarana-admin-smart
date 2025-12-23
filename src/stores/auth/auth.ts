@@ -8,6 +8,32 @@ export const useAuthStore = create<TAuthStore>()(
   persist(
     (set, get) => ({
       user: null,
+      tokens: {
+        kesiswaan: null,
+        finance: null,
+        perpus: null,
+        akademik: null,
+      },
+      setTokens: (tokens) => {
+        set(() => ({
+          tokens: {
+            kesiswaan: tokens.kesiswaan,
+            finance: tokens.finance,
+            perpus: tokens.perpus,
+            akademik: tokens.akademik,
+          },
+        }));
+      },
+      clearTokens: () => {
+        set(() => ({
+          tokens: {
+            kesiswaan: null,
+            finance: null,
+            perpus: null,
+            akademik: null,
+          },
+        }));
+      },
       doLogin: async ({ email, password }) => {
         try {
           const res = await login({ email, password });
@@ -27,6 +53,7 @@ export const useAuthStore = create<TAuthStore>()(
           await logout();
 
           set(() => ({ user: null }));
+          get().clearTokens();
         } catch (error) {
           throw error;
         }

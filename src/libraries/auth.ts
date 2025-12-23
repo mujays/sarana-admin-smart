@@ -1,50 +1,82 @@
+import { useAuthStore } from "@/stores/auth";
+import { useSuperAdminStore } from "@/stores/super-admin";
 import Cookies from "js-cookie";
 
 // MAIN AUTH
 
 export async function storeToken(data: string) {
-  Cookies.set("session_kesiswaan", data, {
-    expires: process.env.NODE_ENV === "development" ? 7 : 1,
+  const { setTokens, tokens } = useAuthStore.getState();
+  setTokens({
+    kesiswaan: data,
+    finance: tokens.finance || "",
+    perpus: tokens.perpus || "",
+    akademik: tokens.akademik || "",
   });
 }
 
 export async function logout() {
-  Cookies.remove("session_kesiswaan");
+  const { clearTokens } = useAuthStore.getState();
+  clearTokens();
 }
 
 export async function getToken() {
-  const session = Cookies.get("session_kesiswaan");
-  if (!session) return null;
-  return session;
+  const { tokens } = useAuthStore.getState();
+  return tokens.kesiswaan;
 }
-// KEUANGAN AUTH
+
+// FINANCE AUTH
 
 export async function storeTokenKeuangan(data: string) {
-  Cookies.set("session_keuangan", data, {
-    expires: process.env.NODE_ENV === "development" ? 7 : 1,
+  const { setTokens, tokens } = useAuthStore.getState();
+  setTokens({
+    kesiswaan: tokens.kesiswaan || "",
+    finance: data,
+    perpus: tokens.perpus || "",
+    akademik: tokens.akademik || "",
   });
 }
 
 export async function logoutKeuangan() {
-  const session = Cookies.get("session_keuangan");
-  if (!session) return null;
-  return session;
+  const { tokens } = useAuthStore.getState();
+  return tokens.finance;
 }
 
-export async function getTokenKeuangan() {
-  const session = Cookies.get("session_keuangan");
-  if (!session) return null;
-  return session;
+export async function getTokenKeuangan(withAdmin = false) {
+  const superAdminCookie = Cookies.get("session_keuangan_super_admin");
+  const { tokens } = useAuthStore.getState();
+  return withAdmin ? superAdminCookie : tokens.finance;
 }
+
+// PERPUS AUTH
 
 export async function getTokenPerpus() {
-  const session = Cookies.get("session_perpus");
-  if (!session) return null;
-  return session;
+  const { tokens } = useAuthStore.getState();
+  return tokens.perpus;
 }
 
 export async function storeTokenPerpus(data: string) {
-  Cookies.set("session_perpus", data, {
-    expires: process.env.NODE_ENV === "development" ? 7 : 1,
+  const { setTokens, tokens } = useAuthStore.getState();
+  setTokens({
+    kesiswaan: tokens.kesiswaan || "",
+    finance: tokens.finance || "",
+    perpus: data,
+    akademik: tokens.akademik || "",
+  });
+}
+
+// AKADEMIK AUTH
+
+export async function getTokenAkademik() {
+  const { tokens } = useAuthStore.getState();
+  return tokens.akademik;
+}
+
+export async function storeTokenAkademik(data: string) {
+  const { setTokens, tokens } = useAuthStore.getState();
+  setTokens({
+    kesiswaan: tokens.kesiswaan || "",
+    finance: tokens.finance || "",
+    perpus: tokens.perpus || "",
+    akademik: data,
   });
 }

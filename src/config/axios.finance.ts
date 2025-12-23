@@ -1,6 +1,5 @@
 import { getTokenKeuangan, logoutKeuangan } from "@/libraries/auth";
 import axios, { AxiosError } from "axios";
-import Cookies from "js-cookie";
 
 const axiosConfigFinance = axios.create({
   baseURL: `${process.env.NEXT_PUBLIC_API_SOURCE_FINANCE}api/v1`,
@@ -9,10 +8,29 @@ const axiosConfigFinance = axios.create({
   },
 });
 
+export const axiosConfigFinanceSuperAdmin = axios.create({
+  baseURL: `${process.env.NEXT_PUBLIC_API_SOURCE_FINANCE}api/v1`,
+  headers: {
+    Accept: "application/json",
+  },
+});
+
+axiosConfigFinanceSuperAdmin.interceptors.request.use(
+  async function (config) {
+    const session = await getTokenKeuangan(true);
+    if (session) {
+      config.headers.Authorization = "Bearer " + session;
+    }
+    return config;
+  },
+  function (error) {
+    return Promise.reject(error);
+  },
+);
+
 axiosConfigFinance.interceptors.request.use(
   async function (config) {
-    const superAdminCookie = Cookies.get("session_keuangan");
-    const session = await getTokenKeuangan();
+    const session = await getTokenKeuangan(false);
     if (session) {
       config.headers.Authorization = "Bearer " + session;
     }
@@ -31,7 +49,7 @@ axiosConfigFinance.interceptors.response.use(
     if (error.response) {
       if (error.response.status === 401) {
         logoutKeuangan();
-        window.location.href = "/login";
+        // window.location.href = "/login";
       }
     }
     return Promise.reject(error);

@@ -213,7 +213,7 @@ function HomePage() {
               Keuangan SMP
             </p>
           </div>
-          {/* <div
+          <div
             className="flex flex-col w-full bg-white p-4 gap-4 cursor-pointer"
             onClick={() => {
               setLoginTo("perpustakaan");
@@ -226,7 +226,7 @@ function HomePage() {
             <p className="font-semibold text-xl text-center text-orange-500">
               Perpustakaan
             </p>
-          </div> */}
+          </div>
         </div>
       </div>
     </div>

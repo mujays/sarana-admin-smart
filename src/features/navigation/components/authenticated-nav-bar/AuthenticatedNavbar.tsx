@@ -18,6 +18,7 @@ import { useQuery } from "@tanstack/react-query";
 import AuthService from "@/services/auth";
 import Notification from "./notification";
 import NotificationService from "@/services/notification";
+import { useAuthStore } from "@/stores/auth";
 import { UserOutlined } from "@ant-design/icons";
 import { useSuperAdmin } from "@/hooks/useSuperAdmin";
 
@@ -74,7 +75,13 @@ export const AuthenticatedNavbar = (props: WithStyle<TAuthenticatedNavbar>) => {
   });
 
   const handleLogout = () => {
+    const { clearTokens } = useAuthStore.getState();
+    clearTokens();
+    // Also clear all cookies
     Cookies.remove("session_kesiswaan");
+    Cookies.remove("session_keuangan");
+    Cookies.remove("session_perpus");
+    Cookies.remove("session_akademik");
     window.location.href = process.env.NEXT_PUBLIC_URL_PORTAL as string;
   };
 

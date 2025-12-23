@@ -1,5 +1,6 @@
-import axios from "@/config/axios";
-import axiosConfigFinance from "@/config/axios.finance";
+import axiosConfigFinance, {
+  axiosConfigFinanceSuperAdmin,
+} from "@/config/axios.finance";
 
 export interface SendOTPRequest {
   email: string;
@@ -30,20 +31,23 @@ export const superAdminAuthService = {
   registerSuperAdmin: async (
     data: RegisterRequest,
   ): Promise<SuperAdminAuthResponse> => {
-    const response = await axiosConfigFinance.post(
+    const response = await axiosConfigFinanceSuperAdmin.post(
       "/admin-super/register",
       data,
     );
     return response.data;
   },
   sendOTP: async (data: SendOTPRequest): Promise<SuperAdminAuthResponse> => {
-    const response = await axiosConfigFinance.post("/admin-super/login", data);
+    const response = await axiosConfigFinanceSuperAdmin.post(
+      "/admin-super/login",
+      data,
+    );
     return response.data;
   },
   forgotPassword: async (data: {
     email: string;
   }): Promise<SuperAdminAuthResponse> => {
-    const response = await axiosConfigFinance.post(
+    const response = await axiosConfigFinanceSuperAdmin.post(
       "/admin-super/forgot-password",
       data,
     );
@@ -55,7 +59,7 @@ export const superAdminAuthService = {
     email: string;
     password_confirmation?: string;
   }): Promise<SuperAdminAuthResponse> => {
-    const response = await axiosConfigFinance.post(
+    const response = await axiosConfigFinanceSuperAdmin.post(
       "/admin-super/reset-password",
       data,
     );
@@ -65,7 +69,7 @@ export const superAdminAuthService = {
   verifyOTP: async (
     data: VerifyOTPRequest,
   ): Promise<SuperAdminAuthResponse> => {
-    const response = await axiosConfigFinance.post(
+    const response = await axiosConfigFinanceSuperAdmin.post(
       "/admin-super/verify-otp",
       data,
     );
@@ -75,7 +79,7 @@ export const superAdminAuthService = {
   resendOTP: async (
     data: VerifyOTPRequest,
   ): Promise<SuperAdminAuthResponse> => {
-    const response = await axiosConfigFinance.post(
+    const response = await axiosConfigFinanceSuperAdmin.post(
       "/super-admin/resend-otp",
       data,
     );
