@@ -1,9 +1,11 @@
 import axiosConfig from "@/config/axios";
+import axiosConfigAkademik from "@/config/axios.akademik";
 import axiosConfigPerpus from "@/config/axios.perpus";
 import { AuthenticatedNavbar } from "@/features/navigation";
 import { useDisclosure } from "@/hooks/useDisclosure";
 import {
   storeToken,
+  storeTokenAkademik,
   storeTokenKeuangan,
   storeTokenPerpus,
 } from "@/libraries/auth";
@@ -29,6 +31,7 @@ function HomePage() {
     | "keuangan-smp"
     | "hrd"
     | "perpustakaan"
+    | "akademik"
     | null
   >(null);
   const [loading, setLoading] = useState(false);
@@ -95,6 +98,16 @@ function HomePage() {
         );
         storeTokenPerpus(res.data.data.token);
         window.location.href = "/perpustakaan";
+      }
+      if (loginTo == "akademik") {
+        const res = await axiosConfigAkademik.post(
+          `${process.env.NEXT_PUBLIC_API_SOURCE_AKADEMIK}api/v1/login`,
+          {
+            email: me?.data.email,
+          },
+        );
+        storeTokenAkademik(res.data.data.token);
+        window.location.href = "/akademik";
       }
       modal.onClose();
     } catch (error) {
@@ -225,6 +238,20 @@ function HomePage() {
             </div>
             <p className="font-semibold text-xl text-center text-orange-500">
               Perpustakaan
+            </p>
+          </div>
+          <div
+            className="flex flex-col w-full bg-white p-4 gap-4 cursor-pointer"
+            onClick={() => {
+              setLoginTo("akademik");
+              modal.onOpen();
+            }}
+          >
+            <div className="bg-orange-500 flex justify-center items-center h-36 rounded-lg">
+              <LibraryIcon className="text-white h-16 w-16" />
+            </div>
+            <p className="font-semibold text-xl text-center text-orange-500">
+              Akademik
             </p>
           </div>
         </div>

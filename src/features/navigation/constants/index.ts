@@ -16,4 +16,6 @@ export const ROUTE_MAP: Record<string, string> = {
   pengaturan: "Pengaturan",
   buku: "Buku",
   wali: "Wali",
+  mapel: "Mata Pelajaran",
+  semester: "Semester",
 };

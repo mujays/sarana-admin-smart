@@ -76,8 +76,6 @@ export default function DetailPPDB() {
     },
   });
 
-  console.log({ siswa });
-
   const dataAyah = useMemo(() => {
     if (siswa) {
       return siswa.data_siswa?.keluarga?.filter(

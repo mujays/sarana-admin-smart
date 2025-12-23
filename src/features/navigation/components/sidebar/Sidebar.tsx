@@ -9,6 +9,7 @@ import {
   BanknoteIcon,
   BookMarkedIcon,
   BusIcon,
+  CalendarFoldIcon,
   CalendarRangeIcon,
   CoinsIcon,
   FileTextIcon,
@@ -361,6 +362,40 @@ export const Sidebar = () => {
                     label: (
                       <Link href={`/perpustakaan/buku`} passHref>
                         {ROUTE_MAP["buku"]}
+                      </Link>
+                    ),
+                    style: menuItemStyle,
+                  },
+                ] as any)
+              : []),
+            ...(router?.asPath.includes("/akademik")
+              ? ([
+                  {
+                    key: "dashboard-perpustakaan",
+                    icon: <DashboardIcon fill={"#FFFFFF"} />,
+                    label: (
+                      <Link href={`/akademik`} passHref>
+                        {ROUTE_MAP["dashboard"]}
+                      </Link>
+                    ),
+                    style: menuItemStyle,
+                  },
+                  {
+                    key: "mata-pelajaran",
+                    icon: <BookMarkedIcon />,
+                    label: (
+                      <Link href={`/akademik/mata-pelajaran`} passHref>
+                        {ROUTE_MAP["mapel"]}
+                      </Link>
+                    ),
+                    style: menuItemStyle,
+                  },
+                  {
+                    key: "semester",
+                    icon: <CalendarFoldIcon />,
+                    label: (
+                      <Link href={`/akademik/semester`} passHref>
+                        {ROUTE_MAP["semester"]}
                       </Link>
                     ),
                     style: menuItemStyle,
