@@ -15,6 +15,7 @@ import { SaveOutlined } from "@ant-design/icons";
 import { useMutation } from "@tanstack/react-query";
 import AkademikService from "@/services/akademik";
 import { TRaport } from "@/services/akademik/akademik.type";
+import { toast } from "sonner";
 
 const { TextArea } = Input;
 const { Text, Title } = Typography;
@@ -46,14 +47,12 @@ function EditRaport({
       return await AkademikService.updateRaport(raportData.id, values);
     },
     onSuccess: () => {
-      message.success("Nilai berhasil diperbarui!");
+      toast.success("Nilai berhasil diperbarui!");
       form.resetFields();
       onSuccess();
     },
     onError: (error: any) => {
-      message.error(
-        error?.response?.data?.message || "Gagal memperbarui nilai!",
-      );
+      toast.error(error?.response?.data?.message || "Gagal memperbarui nilai!");
     },
   });
 

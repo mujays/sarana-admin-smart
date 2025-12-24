@@ -1,7 +1,7 @@
 import { TUser } from "../auth/auth.types";
 import { BaseResponse, BaseResponsePaginate } from "../base-response.type";
 import axiosConfigPerpus from "@/config/axios.perpus";
-import { TBooks } from "./type";
+import { BorrowDto, TBooks, TBorrow } from "./type";
 
 const PerpusService = {
   login: async () => {
@@ -37,6 +37,27 @@ const PerpusService = {
     const response = await axiosConfigPerpus.post<BaseResponse<TBooks>>(
       `/books`,
       data,
+    );
+    return response.data;
+  },
+  createBorrow: async (data: BorrowDto) => {
+    const response = await axiosConfigPerpus.post<BaseResponse<TBorrow>>(
+      `/loans/borrow`,
+      data,
+    );
+    return response.data;
+  },
+  getBorrows: async (params: any) => {
+    const response = await axiosConfigPerpus.get<BaseResponsePaginate<TBorrow>>(
+      `/loans`,
+      { params },
+    );
+    return response.data;
+  },
+  returnBorrows: async (loanId: number, params: any) => {
+    const response = await axiosConfigPerpus.post<BaseResponse<TBorrow>>(
+      `/loans/${loanId}/return`,
+      { params },
     );
     return response.data;
   },

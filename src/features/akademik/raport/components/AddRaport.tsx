@@ -23,6 +23,7 @@ import {
 import { useMutation } from "@tanstack/react-query";
 import AkademikService from "@/services/akademik";
 import { RaportDto, TMataPelajaran } from "@/services/akademik/akademik.type";
+import { toast } from "sonner";
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -80,7 +81,7 @@ function AddRaport({
       return await AkademikService.createRaport(payload);
     },
     onSuccess: () => {
-      message.success("Nilai berhasil ditambahkan!");
+      toast.success("Nilai berhasil ditambahkan!");
       form.resetFields();
       setRaportItems([
         { mata_pelajaran_id: 0, nilai_angka: 0, catatan: "", key: Date.now() },
@@ -88,7 +89,7 @@ function AddRaport({
       onSuccess();
     },
     onError: (error: any) => {
-      message.error(error?.response?.data?.message || "Gagal menambah nilai!");
+      toast.error(error?.response?.data?.message || "Gagal menambah nilai!");
     },
   });
 
@@ -120,7 +121,7 @@ function AddRaport({
     );
 
     if (!isValid) {
-      message.error("Mohon lengkapi semua field yang diperlukan!");
+      toast.error("Mohon lengkapi semua field yang diperlukan!");
       return;
     }
 
@@ -131,7 +132,7 @@ function AddRaport({
     );
 
     if (hasDuplicate) {
-      message.error("Mata pelajaran tidak boleh duplikat!");
+      toast.error("Mata pelajaran tidak boleh duplikat!");
       return;
     }
 
