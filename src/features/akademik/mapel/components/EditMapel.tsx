@@ -86,6 +86,7 @@ function EditMapel({ mapelId }: { mapelId: number }) {
           <Form.Item
             label="Kode Mata Pelajaran"
             name="kode"
+            className="!mb-2"
             rules={[
               { required: true, message: "Kode mata pelajaran wajib diisi" },
             ]}
@@ -96,6 +97,7 @@ function EditMapel({ mapelId }: { mapelId: number }) {
           <Form.Item
             label="Nama Mata Pelajaran"
             name="nama"
+            className="!mb-2"
             rules={[
               { required: true, message: "Nama mata pelajaran wajib diisi" },
             ]}
@@ -106,6 +108,7 @@ function EditMapel({ mapelId }: { mapelId: number }) {
           <Form.Item
             label="Deskripsi"
             name="deskripsi"
+            className="!mb-2"
             rules={[{ required: true, message: "Deskripsi wajib diisi" }]}
           >
             <Input.TextArea
@@ -117,9 +120,10 @@ function EditMapel({ mapelId }: { mapelId: number }) {
           <Form.Item
             label="Status Aktif"
             name="is_active"
+            className="!mb-2"
             valuePropName="checked"
           >
-            <Switch checkedChildren="Aktif" unCheckedChildren="Tidak Aktif" />
+            <Switch className="!mb-2" />
           </Form.Item>
 
           <div className="flex justify-end gap-2">

@@ -61,6 +61,7 @@ function AddMapel() {
           <Form.Item
             label="Kode Mata Pelajaran"
             name="kode"
+            className="!mb-2"
             rules={[
               { required: true, message: "Kode mata pelajaran wajib diisi" },
             ]}
@@ -71,6 +72,7 @@ function AddMapel() {
           <Form.Item
             label="Nama Mata Pelajaran"
             name="nama"
+            className="!mb-2"
             rules={[
               { required: true, message: "Nama mata pelajaran wajib diisi" },
             ]}
@@ -81,6 +83,7 @@ function AddMapel() {
           <Form.Item
             label="Deskripsi"
             name="deskripsi"
+            className="!mb-2"
             rules={[{ required: true, message: "Deskripsi wajib diisi" }]}
           >
             <Input.TextArea
@@ -93,9 +96,10 @@ function AddMapel() {
             label="Status Aktif"
             name="is_active"
             valuePropName="checked"
+            className="!mb-2"
             initialValue={true}
           >
-            <Switch checkedChildren="Aktif" unCheckedChildren="Tidak Aktif" />
+            <Switch />
           </Form.Item>
 
           <div className="flex justify-end gap-2">

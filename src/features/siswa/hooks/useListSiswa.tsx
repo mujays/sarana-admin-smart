@@ -13,8 +13,9 @@ type Props = {
   search: string;
   sort?: string;
   kelas?: string[];
-  app?: "keuangan" | "kesiswaan";
+  app?: "keuangan" | "akademik" | "kesiswaan";
   isNewStudent?: boolean;
+  overrideType?: string;
 };
 
 function useListSiswa({
@@ -25,6 +26,7 @@ function useListSiswa({
   kelas,
   sort = "nama,asc",
   isNewStudent = false,
+  overrideType,
 }: Props) {
   const router = useRouter();
   const paths = router.pathname.split("/");
@@ -35,7 +37,7 @@ function useListSiswa({
       page,
       limit,
       search,
-      type,
+      overrideType ?? type,
       kelas,
       isNewStudent,
       sort,
@@ -49,7 +51,7 @@ function useListSiswa({
         by: sort.split(",")[1],
         ...(kelas && kelas.length ? { kelas } : {}),
         ...(isNewStudent ? { is_before: true } : {}),
-        ...(type ? { type } : {}),
+        ...(overrideType ?? type ? { type: overrideType ?? type } : {}),
         with: "kelas",
         siswa_lama: !isNewStudent,
       });
@@ -133,6 +135,15 @@ function useListSiswa({
                   Tagihan Lainnya
                 </Button>
               </>
+            )}
+            {app === "akademik" && (
+              <Button
+                onClick={() =>
+                  router.push(`${router.pathname}/${record.id}/manage-raport`)
+                }
+              >
+                Detail Rapot
+              </Button>
             )}
             {app === "kesiswaan" && (
               <>

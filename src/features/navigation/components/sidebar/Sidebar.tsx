@@ -16,6 +16,7 @@ import {
   GraduationCap,
   HandCoinsIcon,
   SchoolIcon,
+  ScrollTextIcon,
   Settings2Icon,
   SettingsIcon,
   User2Icon,
@@ -371,7 +372,7 @@ export const Sidebar = () => {
             ...(router?.asPath.includes("/akademik")
               ? ([
                   {
-                    key: "dashboard-perpustakaan",
+                    key: "dashboard-akademik",
                     icon: <DashboardIcon fill={"#FFFFFF"} />,
                     label: (
                       <Link href={`/akademik`} passHref>
@@ -396,6 +397,16 @@ export const Sidebar = () => {
                     label: (
                       <Link href={`/akademik/semester`} passHref>
                         {ROUTE_MAP["semester"]}
+                      </Link>
+                    ),
+                    style: menuItemStyle,
+                  },
+                  {
+                    key: "raport",
+                    icon: <ScrollTextIcon />,
+                    label: (
+                      <Link href={`/akademik/raport`} passHref>
+                        {ROUTE_MAP["raport"]}
                       </Link>
                     ),
                     style: menuItemStyle,

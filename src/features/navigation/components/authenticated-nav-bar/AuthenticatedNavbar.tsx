@@ -30,6 +30,7 @@ export type TAuthenticatedNavbar = {
     | "dashboard-akademik"
     | "notification"
     | "mapel"
+    | "semester"
     | "raport"
     | "books"
     | "pengaturan"
