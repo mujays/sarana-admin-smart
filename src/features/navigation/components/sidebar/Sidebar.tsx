@@ -367,6 +367,16 @@ export const Sidebar = () => {
                     ),
                     style: menuItemStyle,
                   },
+                  {
+                    key: "loan",
+                    icon: <BookMarkedIcon />,
+                    label: (
+                      <Link href={`/perpustakaan/loan`} passHref>
+                        {ROUTE_MAP["loan"]}
+                      </Link>
+                    ),
+                    style: menuItemStyle,
+                  },
                 ] as any)
               : []),
             ...(router?.asPath.includes("/akademik")

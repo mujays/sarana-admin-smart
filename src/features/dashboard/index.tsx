@@ -94,7 +94,7 @@ export default function Dashboard() {
 
   // Chart configurations
   const genderChart = {
-    series: dashboardData.jumlah_siswa.chart.map((item) => item.value),
+    series: dashboardData?.jumlah_siswa?.chart.map((item) => item.value),
     options: {
       chart: {
         type: "donut" as const,
@@ -115,14 +115,14 @@ export default function Dashboard() {
   };
 
   // Class distribution chart
-  const kelasData = dashboardData.recap_kelas.filter(
+  const kelasData = dashboardData?.recap_kelas.filter(
     (kelas) => kelas.jumlah_siswa > 0,
   );
   const kelasChart = {
     series: [
       {
         name: "Jumlah Siswa",
-        data: kelasData.map((kelas) => kelas.jumlah_siswa),
+        data: kelasData?.map((kelas) => kelas.jumlah_siswa),
       },
     ],
     options: {
@@ -131,7 +131,7 @@ export default function Dashboard() {
         horizontal: true,
       },
       xaxis: {
-        categories: kelasData.map((kelas) => kelas.nama),
+        categories: kelasData?.map((kelas) => kelas.nama),
       },
       colors: ["#10B981"],
       plotOptions: {
@@ -145,8 +145,8 @@ export default function Dashboard() {
   // Form status chart
   const formChart = {
     series: [
-      dashboardData.keterangan.form_siswa.pending,
-      dashboardData.keterangan.form_pindahan.pending,
+      dashboardData?.keterangan.form_siswa.pending,
+      dashboardData?.keterangan.form_pindahan.pending,
     ],
     options: {
       chart: {
@@ -193,7 +193,7 @@ export default function Dashboard() {
             <Card>
               <Statistic
                 title="Total Siswa"
-                value={dashboardData.jumlah_siswa.total}
+                value={dashboardData?.jumlah_siswa.total}
                 prefix={<UserOutlined />}
                 valueStyle={{ color: "#3f8600" }}
               />
@@ -203,7 +203,7 @@ export default function Dashboard() {
             <Card>
               <Statistic
                 title="Total Wali"
-                value={dashboardData.recap_wali.total}
+                value={dashboardData?.recap_wali.total}
                 prefix={<TeamOutlined />}
                 valueStyle={{ color: "#1890ff" }}
               />
@@ -214,8 +214,8 @@ export default function Dashboard() {
               <Statistic
                 title="Form Pending"
                 value={
-                  dashboardData.keterangan.form_siswa.pending +
-                  dashboardData.keterangan.form_pindahan.pending
+                  dashboardData?.keterangan.form_siswa.pending +
+                  dashboardData?.keterangan.form_pindahan.pending
                 }
                 prefix={<BookOutlined />}
                 valueStyle={{ color: "#cf1322" }}
@@ -226,7 +226,7 @@ export default function Dashboard() {
             <Card>
               <Statistic
                 title="Tahun Ajaran"
-                value={dashboardData.kalender_akademik.tahun_ajaran}
+                value={dashboardData?.kalender_akademik.tahun_ajaran}
                 prefix={<CalendarOutlined />}
                 valueStyle={{ color: "#722ed1" }}
               />
@@ -240,13 +240,13 @@ export default function Dashboard() {
             <Card title="Distribusi Gender Siswa" className="h-full">
               <div className="text-center mb-4">
                 <div className="text-2xl font-bold">
-                  {dashboardData.jumlah_siswa.total}
+                  {dashboardData?.jumlah_siswa.total}
                 </div>
                 <div className="text-gray-500">Total Siswa</div>
               </div>
               <Chart
                 options={genderChart.options as ApexOptions}
-                series={genderChart.series}
+                series={genderChart?.series as any}
                 type="donut"
                 height={300}
               />
@@ -254,13 +254,13 @@ export default function Dashboard() {
                 <div className="flex justify-between">
                   <span>Laki-Laki:</span>
                   <span className="font-semibold">
-                    {dashboardData.jumlah_siswa.laki_laki}
+                    {dashboardData?.jumlah_siswa.laki_laki}
                   </span>
                 </div>
                 <div className="flex justify-between">
                   <span>Perempuan:</span>
                   <span className="font-semibold">
-                    {dashboardData.jumlah_siswa.perempuan}
+                    {dashboardData?.jumlah_siswa.perempuan}
                   </span>
                 </div>
               </div>
@@ -271,7 +271,7 @@ export default function Dashboard() {
             <Card title="Status Pendaftaran" className="h-full">
               <Chart
                 options={formChart.options as ApexOptions}
-                series={formChart.series}
+                series={formChart.series as any}
                 type="pie"
                 height={300}
               />
@@ -279,13 +279,13 @@ export default function Dashboard() {
                 <div className="flex justify-between">
                   <span>Siswa Baru:</span>
                   <Tag color="blue">
-                    {dashboardData.keterangan.form_siswa.pending} pending
+                    {dashboardData?.keterangan.form_siswa.pending} pending
                   </Tag>
                 </div>
                 <div className="flex justify-between">
                   <span>Siswa Pindahan:</span>
                   <Tag color="green">
-                    {dashboardData.keterangan.form_pindahan.pending} pending
+                    {dashboardData?.keterangan.form_pindahan.pending} pending
                   </Tag>
                 </div>
               </div>
@@ -294,19 +294,19 @@ export default function Dashboard() {
 
           <Col xs={24} lg={8}>
             <Card
-              title={`Kalender Akademik - ${dashboardData.kalender_akademik.month_name} ${dashboardData.kalender_akademik.year}`}
+              title={`Kalender Akademik - ${dashboardData?.kalender_akademik.month_name} ${dashboardData?.kalender_akademik.year}`}
               className="h-full"
             >
               <div className="text-center mb-4">
                 <div className="text-lg font-semibold">Tahun Ajaran</div>
                 <div className="text-2xl font-bold text-blue-600">
-                  {dashboardData.kalender_akademik.tahun_ajaran}
+                  {dashboardData?.kalender_akademik.tahun_ajaran}
                 </div>
               </div>
               <Calendar
                 fullscreen={false}
                 value={dayjs(
-                  `${dashboardData.kalender_akademik.year}-${dashboardData.kalender_akademik.month}-01`,
+                  `${dashboardData?.kalender_akademik.year}-${dashboardData?.kalender_akademik.month}-01`,
                 )}
               />
             </Card>
@@ -333,7 +333,7 @@ export default function Dashboard() {
                   <div className="text-lg font-semibold">Total Kelas Aktif</div>
                   <div className="text-3xl font-bold text-green-600">
                     {
-                      dashboardData.recap_kelas.filter(
+                      dashboardData?.recap_kelas.filter(
                         (k) => k.jumlah_siswa > 0,
                       ).length
                     }
@@ -342,7 +342,7 @@ export default function Dashboard() {
               </div>
               <Table
                 columns={kelasColumns}
-                dataSource={dashboardData.recap_kelas}
+                dataSource={dashboardData?.recap_kelas}
                 rowKey="id"
                 pagination={false}
                 size="small"
@@ -360,7 +360,7 @@ export default function Dashboard() {
                 <Col xs={24} sm={8}>
                   <div className="text-center p-4 bg-green-50 rounded-lg">
                     <div className="text-2xl font-bold text-green-600">
-                      {dashboardData.recap_wali.total}
+                      {dashboardData?.recap_wali.total}
                     </div>
                     <div className="text-gray-600">Total Wali</div>
                   </div>
@@ -368,7 +368,7 @@ export default function Dashboard() {
                 <Col xs={24} sm={8}>
                   <div className="text-center p-4 bg-blue-50 rounded-lg">
                     <div className="text-2xl font-bold text-blue-600">
-                      {dashboardData.recap_wali.with_siswa}
+                      {dashboardData?.recap_wali.with_siswa}
                     </div>
                     <div className="text-gray-600">Wali dengan Siswa</div>
                   </div>
@@ -376,7 +376,7 @@ export default function Dashboard() {
                 <Col xs={24} sm={8}>
                   <div className="text-center p-4 bg-red-50 rounded-lg">
                     <div className="text-2xl font-bold text-red-600">
-                      {dashboardData.recap_wali.without_siswa}
+                      {dashboardData?.recap_wali.without_siswa}
                     </div>
                     <div className="text-gray-600">Wali tanpa Siswa</div>
                   </div>
@@ -385,8 +385,8 @@ export default function Dashboard() {
               <div className="mt-4">
                 <Progress
                   percent={Math.round(
-                    (dashboardData.recap_wali.with_siswa /
-                      dashboardData.recap_wali.total) *
+                    (dashboardData?.recap_wali.with_siswa /
+                      dashboardData?.recap_wali.total) *
                       100,
                   )}
                   status="active"
@@ -402,7 +402,7 @@ export default function Dashboard() {
         </Row>
 
         {/* Alumni Section */}
-        {dashboardData.recap_alumni.total === 0 && (
+        {dashboardData?.recap_alumni.total === 0 && (
           <Row gutter={[16, 16]} className="mt-6">
             <Col xs={24}>
               <Card title="Data Alumni">
