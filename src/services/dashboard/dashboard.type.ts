@@ -93,3 +93,88 @@ export interface DashboardResponse {
   recap_kelas: RecapKelas[];
   recap_wali: RecapWali;
 }
+
+// ======================
+// Dashboard Keuangan
+// ======================
+interface Pemasukan {
+  total: number;
+  target: number;
+  percentage: number;
+  formatted: string;
+}
+
+interface Saldo {
+  balance: number;
+  formatted: string;
+}
+
+interface JumlahSiswaKeuangan {
+  total: number;
+  aktif: number;
+  non_aktif: number;
+}
+
+interface TagihanStatus {
+  lunas: number;
+  belum_lunas: number;
+  melampaui_tempo: number;
+  belum_melampaui_tempo: number;
+}
+
+interface UangPangkalStatus {
+  lunas: number;
+  diangsur: number;
+  belum_lunas: number;
+}
+
+interface SummaryItem {
+  label: string;
+  value: number;
+  color: string;
+}
+
+interface RiwayatTransaksi {
+  tagihan: TagihanStatus;
+  transaksi_pending: number;
+  uang_pangkal: UangPangkalStatus;
+  summary: SummaryItem[];
+}
+
+interface JalurTempoItem {
+  label: string;
+  value: number;
+  color: string;
+}
+
+interface TagihanChartItem {
+  bulan: string;
+  bulan_number: number;
+  total_tagihan: number;
+  tagihan_lunas: number;
+  pembayaran: number;
+}
+
+interface UangPangkalSummaryFormatted {
+  total_kewajiban: string;
+  total_terbayar: string;
+  sisa_tagihan: string;
+}
+
+interface UangPangkalSummary {
+  total_kewajiban: number;
+  total_terbayar: number;
+  sisa_tagihan: number;
+  percentage: number;
+  formatted: UangPangkalSummaryFormatted;
+}
+
+export interface DashboardKeuanganResponse {
+  pemasukan: Pemasukan;
+  saldo: Saldo;
+  jumlah_siswa: JumlahSiswaKeuangan;
+  riwayat_transaksi: RiwayatTransaksi;
+  jalur_tempo_tagihan: JalurTempoItem[];
+  tagihan_chart: TagihanChartItem[];
+  uang_pangkal_summary: UangPangkalSummary;
+}

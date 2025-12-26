@@ -1,6 +1,6 @@
 import axiosConfig from "@/config/axios";
 import { BaseResponse, BaseResponsePaginate } from "../base-response.type";
-import { DashboardResponse } from "./dashboard.type";
+import { DashboardResponse, DashboardKeuanganResponse } from "./dashboard.type";
 import axiosConfigFinance from "@/config/axios.finance";
 
 const DashboardServices = {
@@ -15,7 +15,7 @@ const DashboardServices = {
   },
   getKeuangan: async () => {
     const response = await axiosConfigFinance.get<
-      BaseResponse<DashboardResponse>
+      BaseResponse<DashboardKeuanganResponse>
     >(`/dashboard`);
     return response.data;
   },

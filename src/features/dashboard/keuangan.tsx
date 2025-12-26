@@ -4,25 +4,10 @@ import { Title } from "@/components/title/Title";
 
 import { AuthenticatedLayout } from "@/layouts/AuthenticatedLayout";
 import Head from "next/head";
-import {
-  ArrowBigDown,
-  BanknoteIcon,
-  HistoryIcon,
-  Loader2Icon,
-  MessageCircleReply,
-} from "lucide-react";
+import { Loader2Icon } from "lucide-react";
 import dynamic from "next/dynamic";
 import { ApexOptions } from "apexcharts";
-import {
-  Card,
-  Row,
-  Col,
-  Statistic,
-  Progress,
-  Tag,
-  Table,
-  TableProps,
-} from "antd";
+import { Card, Row, Col, Statistic, Progress, Table, TableProps } from "antd";
 import {
   DollarOutlined,
   BankOutlined,
@@ -33,11 +18,8 @@ import {
   FileTextOutlined,
 } from "@ant-design/icons";
 import { useQuery } from "@tanstack/react-query";
-import TagihanService from "@/services/tagihan";
-import TahunAjaranService from "@/services/tahun-ajaran";
-import ClientService from "@/services/client";
-import { useRouter } from "next/router";
-import { formatCurrency } from "@/stores/utils";
+import DashboardServices from "@/services/dashboard";
+import { DashboardKeuanganResponse } from "@/services/dashboard/dashboard.type";
 const Chart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
   loading: () => (
@@ -48,186 +30,26 @@ const Chart = dynamic(() => import("react-apexcharts"), {
 });
 
 export default function DashboardKeuangan() {
-  const dataFix = {
-    pemasukan: {
-      total: 0,
-      target: 7185360000,
-      percentage: 0,
-      formatted: "Rp. 0",
-    },
-    saldo: {
-      balance: 0,
-      formatted: "Rp. 0",
-    },
-    jumlah_siswa: {
-      total: 293,
-      aktif: 274,
-      non_aktif: 19,
-    },
-    riwayat_transaksi: {
-      tagihan: {
-        lunas: 1592,
-        belum_lunas: 1695,
-        melampaui_tempo: 100,
-        belum_melampaui_tempo: 1595,
+  const { data: dataDashboard, isLoading } =
+    useQuery<DashboardKeuanganResponse>({
+      queryKey: ["DASHBOARD_STATS"],
+      queryFn: async () => {
+        const res = await DashboardServices.getKeuangan();
+        return res.data;
       },
-      transaksi_pending: 181,
-      uang_pangkal: {
-        lunas: 261,
-        diangsur: 0,
-        belum_lunas: 93,
-      },
-      summary: [
-        {
-          label: "Lunas",
-          value: 1592,
-          color: "#10B981",
-        },
-        {
-          label: "Diangsur",
-          value: 0,
-          color: "#F59E0B",
-        },
-        {
-          label: "Belum & sudah melampaui tempo pembayaran",
-          value: 100,
-          color: "#EF4444",
-        },
-        {
-          label: "Transaksi dalam proses",
-          value: 181,
-          color: "#3B82F6",
-        },
-      ],
-    },
-    jalur_tempo_tagihan: [
-      {
-        label: "Terlambat",
-        value: 100,
-        color: "#EF4444",
-      },
-      {
-        label: "Jatuh tempo minggu ini",
-        value: 0,
-        color: "#F59E0B",
-      },
-      {
-        label: "Jatuh tempo bulan ini",
-        value: 257,
-        color: "#3B82F6",
-      },
-      {
-        label: "Jatuh tempo mendatang",
-        value: 1338,
-        color: "#10B981",
-      },
-    ],
-    tagihan_chart: [
-      {
-        bulan: "Januari",
-        bulan_number: 1,
-        total_tagihan: 0,
-        tagihan_lunas: 0,
-        pembayaran: 0,
-      },
-      {
-        bulan: "Februari",
-        bulan_number: 2,
-        total_tagihan: 0,
-        tagihan_lunas: 0,
-        pembayaran: 0,
-      },
-      {
-        bulan: "Maret",
-        bulan_number: 3,
-        total_tagihan: 0,
-        tagihan_lunas: 0,
-        pembayaran: 0,
-      },
-      {
-        bulan: "April",
-        bulan_number: 4,
-        total_tagihan: 0,
-        tagihan_lunas: 0,
-        pembayaran: 0,
-      },
-      {
-        bulan: "Mei",
-        bulan_number: 5,
-        total_tagihan: 0,
-        tagihan_lunas: 0,
-        pembayaran: 0,
-      },
-      {
-        bulan: "Juni",
-        bulan_number: 6,
-        total_tagihan: 0,
-        tagihan_lunas: 0,
-        pembayaran: 0,
-      },
-      {
-        bulan: "Juli",
-        bulan_number: 7,
-        total_tagihan: 0,
-        tagihan_lunas: 0,
-        pembayaran: 0,
-      },
-      {
-        bulan: "Agustus",
-        bulan_number: 8,
-        total_tagihan: 586800000,
-        tagihan_lunas: 306900000,
-        pembayaran: 0,
-      },
-      {
-        bulan: "September",
-        bulan_number: 9,
-        total_tagihan: 5065650000,
-        tagihan_lunas: 2433425000,
-        pembayaran: 0,
-      },
-      {
-        bulan: "Oktober",
-        bulan_number: 10,
-        total_tagihan: 41250000,
-        tagihan_lunas: 20600000,
-        pembayaran: 0,
-      },
-      {
-        bulan: "November",
-        bulan_number: 11,
-        total_tagihan: 0,
-        tagihan_lunas: 0,
-        pembayaran: 0,
-      },
-      {
-        bulan: "Desember",
-        bulan_number: 12,
-        total_tagihan: 0,
-        tagihan_lunas: 0,
-        pembayaran: 0,
-      },
-    ],
-    uang_pangkal_summary: {
-      total_kewajiban: 1491660000,
-      total_terbayar: 1440973751,
-      sisa_tagihan: 50686249,
-      percentage: 96.6,
-      formatted: {
-        total_kewajiban: "Rp. 1.491.660.000",
-        total_terbayar: "Rp. 1.440.973.751",
-        sisa_tagihan: "Rp. 50.686.249",
-      },
-    },
-  };
+    });
 
   // Chart configurations
   const summaryChart = {
-    series: dataFix.riwayat_transaksi.summary.map((item) => item.value),
+    series: dataDashboard?.riwayat_transaksi.summary.map((item) => item.value),
     options: {
       chart: { type: "donut" as const },
-      labels: dataFix.riwayat_transaksi.summary.map((item) => item.label),
-      colors: dataFix.riwayat_transaksi.summary.map((item) => item.color),
+      labels: dataDashboard?.riwayat_transaksi.summary.map(
+        (item) => item.label,
+      ),
+      colors: dataDashboard?.riwayat_transaksi.summary.map(
+        (item) => item.color,
+      ),
       legend: { position: "bottom" as const },
       plotOptions: {
         pie: { donut: { size: "65%" } },
@@ -236,41 +58,44 @@ export default function DashboardKeuangan() {
   };
 
   const tempoChart = {
-    series: dataFix.jalur_tempo_tagihan.map((item) => item.value),
+    series: dataDashboard?.jalur_tempo_tagihan.map((item) => item.value),
     options: {
       chart: { type: "pie" as const },
-      labels: dataFix.jalur_tempo_tagihan.map((item) => item.label),
-      colors: dataFix.jalur_tempo_tagihan.map((item) => item.color),
+      labels: dataDashboard?.jalur_tempo_tagihan.map((item) => item.label),
+      colors: dataDashboard?.jalur_tempo_tagihan.map((item) => item.color),
       legend: { position: "bottom" as const },
     },
   };
 
   // Filter active months for line chart
-  const activeMonths = dataFix.tagihan_chart.filter(
+  const activeMonths = dataDashboard?.tagihan_chart.filter(
     (month) => month.total_tagihan > 0,
   );
   const monthlyChart = {
     series: [
       {
         name: "Total Tagihan",
-        data: activeMonths.map((month) => month.total_tagihan),
+        data: activeMonths?.map((month) => month.total_tagihan),
       },
       {
         name: "Tagihan Lunas",
-        data: activeMonths.map((month) => month.tagihan_lunas),
+        data: activeMonths?.map((month) => month.tagihan_lunas),
       },
     ],
     options: {
       chart: { type: "line" as const },
       stroke: { curve: "smooth" as const },
-      xaxis: { categories: activeMonths.map((month) => month.bulan) },
+      xaxis: { categories: activeMonths?.map((month) => month.bulan) },
       colors: ["#3B82F6", "#10B981"],
       legend: { position: "top" as const },
     },
   };
 
   const siswaChart = {
-    series: [dataFix.jumlah_siswa.aktif, dataFix.jumlah_siswa.non_aktif],
+    series: [
+      dataDashboard?.jumlah_siswa.aktif,
+      dataDashboard?.jumlah_siswa.non_aktif,
+    ],
     options: {
       chart: { type: "pie" as const },
       labels: ["Aktif", "Non Aktif"],
@@ -318,13 +143,15 @@ export default function DashboardKeuangan() {
             <Card>
               <Statistic
                 title="Pemasukan"
-                value={dataFix.pemasukan.formatted}
+                value={dataDashboard?.pemasukan.formatted}
                 prefix={<DollarOutlined />}
                 valueStyle={{ color: "#3f8600" }}
               />
               <Progress
-                percent={dataFix.pemasukan.percentage}
-                format={() => `${dataFix.pemasukan.percentage}% dari target`}
+                percent={dataDashboard?.pemasukan.percentage}
+                format={() =>
+                  `${dataDashboard?.pemasukan.percentage}% dari target`
+                }
               />
             </Card>
           </Col>
@@ -332,7 +159,7 @@ export default function DashboardKeuangan() {
             <Card>
               <Statistic
                 title="Saldo"
-                value={dataFix.saldo.formatted}
+                value={dataDashboard?.saldo.formatted}
                 prefix={<BankOutlined />}
                 valueStyle={{ color: "#1890ff" }}
               />
@@ -342,13 +169,13 @@ export default function DashboardKeuangan() {
             <Card>
               <Statistic
                 title="Total Siswa"
-                value={dataFix.jumlah_siswa.total}
+                value={dataDashboard?.jumlah_siswa.total}
                 prefix={<TeamOutlined />}
                 valueStyle={{ color: "#722ed1" }}
               />
               <div className="text-sm text-gray-500 mt-2">
-                Aktif: {dataFix.jumlah_siswa.aktif} | Non-aktif:{" "}
-                {dataFix.jumlah_siswa.non_aktif}
+                Aktif: {dataDashboard?.jumlah_siswa.aktif} | Non-aktif:{" "}
+                {dataDashboard?.jumlah_siswa.non_aktif}
               </div>
             </Card>
           </Col>
@@ -356,7 +183,7 @@ export default function DashboardKeuangan() {
             <Card>
               <Statistic
                 title="Transaksi Pending"
-                value={dataFix.riwayat_transaksi.transaksi_pending}
+                value={dataDashboard?.riwayat_transaksi.transaksi_pending}
                 prefix={<ClockCircleOutlined />}
                 valueStyle={{ color: "#cf1322" }}
               />
@@ -392,13 +219,13 @@ export default function DashboardKeuangan() {
             <Card title="Status Siswa" className="h-full">
               <div className="text-center mb-4">
                 <div className="text-2xl font-bold">
-                  {dataFix.jumlah_siswa.total}
+                  {dataDashboard?.jumlah_siswa.total}
                 </div>
                 <div className="text-gray-500">Total Siswa</div>
               </div>
               <Chart
                 options={siswaChart.options as ApexOptions}
-                series={siswaChart.series}
+                series={siswaChart.series as number[]}
                 type="pie"
                 height={200}
               />
@@ -412,7 +239,7 @@ export default function DashboardKeuangan() {
             <Card title="Tren Tagihan Bulanan">
               <Chart
                 options={monthlyChart.options as ApexOptions}
-                series={monthlyChart.series}
+                series={monthlyChart?.series as ApexAxisChartSeries}
                 type="line"
                 height={400}
               />
@@ -429,7 +256,7 @@ export default function DashboardKeuangan() {
                   <div className="text-center p-4 bg-green-50 rounded-lg">
                     <CheckCircleOutlined className="text-2xl text-green-600 mb-2" />
                     <div className="text-2xl font-bold text-green-600">
-                      {dataFix.riwayat_transaksi.tagihan.lunas}
+                      {dataDashboard?.riwayat_transaksi.tagihan.lunas}
                     </div>
                     <div className="text-gray-600">Tagihan Lunas</div>
                   </div>
@@ -438,7 +265,7 @@ export default function DashboardKeuangan() {
                   <div className="text-center p-4 bg-red-50 rounded-lg">
                     <ExclamationCircleOutlined className="text-2xl text-red-600 mb-2" />
                     <div className="text-2xl font-bold text-red-600">
-                      {dataFix.riwayat_transaksi.tagihan.belum_lunas}
+                      {dataDashboard?.riwayat_transaksi.tagihan.belum_lunas}
                     </div>
                     <div className="text-gray-600">Belum Lunas</div>
                   </div>
@@ -447,7 +274,7 @@ export default function DashboardKeuangan() {
                   <div className="text-center p-4 bg-yellow-50 rounded-lg">
                     <ClockCircleOutlined className="text-2xl text-yellow-600 mb-2" />
                     <div className="text-2xl font-bold text-yellow-600">
-                      {dataFix.riwayat_transaksi.tagihan.melampaui_tempo}
+                      {dataDashboard?.riwayat_transaksi.tagihan.melampaui_tempo}
                     </div>
                     <div className="text-gray-600">Melampaui Tempo</div>
                   </div>
@@ -456,7 +283,10 @@ export default function DashboardKeuangan() {
                   <div className="text-center p-4 bg-blue-50 rounded-lg">
                     <FileTextOutlined className="text-2xl text-blue-600 mb-2" />
                     <div className="text-2xl font-bold text-blue-600">
-                      {dataFix.riwayat_transaksi.tagihan.belum_melampaui_tempo}
+                      {
+                        dataDashboard?.riwayat_transaksi.tagihan
+                          .belum_melampaui_tempo
+                      }
                     </div>
                     <div className="text-gray-600">Belum Melampaui Tempo</div>
                   </div>
@@ -469,7 +299,7 @@ export default function DashboardKeuangan() {
             <Card title="Uang Pangkal">
               <div className="mb-4">
                 <Progress
-                  percent={dataFix.uang_pangkal_summary.percentage}
+                  percent={dataDashboard?.uang_pangkal_summary.percentage}
                   strokeColor={{
                     from: "#108ee9",
                     to: "#87d068",
@@ -481,19 +311,25 @@ export default function DashboardKeuangan() {
                 <div className="flex justify-between">
                   <span>Total Kewajiban:</span>
                   <span className="font-semibold">
-                    {dataFix.uang_pangkal_summary.formatted.total_kewajiban}
+                    {
+                      dataDashboard?.uang_pangkal_summary.formatted
+                        .total_kewajiban
+                    }
                   </span>
                 </div>
                 <div className="flex justify-between">
                   <span>Total Terbayar:</span>
                   <span className="font-semibold text-green-600">
-                    {dataFix.uang_pangkal_summary.formatted.total_terbayar}
+                    {
+                      dataDashboard?.uang_pangkal_summary.formatted
+                        .total_terbayar
+                    }
                   </span>
                 </div>
                 <div className="flex justify-between">
                   <span>Sisa Tagihan:</span>
                   <span className="font-semibold text-red-600">
-                    {dataFix.uang_pangkal_summary.formatted.sisa_tagihan}
+                    {dataDashboard?.uang_pangkal_summary.formatted.sisa_tagihan}
                   </span>
                 </div>
               </div>
@@ -503,7 +339,7 @@ export default function DashboardKeuangan() {
                   <Col xs={24} sm={8}>
                     <div className="text-center">
                       <div className="text-lg font-bold text-green-600">
-                        {dataFix.riwayat_transaksi.uang_pangkal.lunas}
+                        {dataDashboard?.riwayat_transaksi.uang_pangkal.lunas}
                       </div>
                       <div className="text-xs text-gray-600">Lunas</div>
                     </div>
@@ -511,7 +347,7 @@ export default function DashboardKeuangan() {
                   <Col xs={24} sm={8}>
                     <div className="text-center">
                       <div className="text-lg font-bold text-yellow-600">
-                        {dataFix.riwayat_transaksi.uang_pangkal.diangsur}
+                        {dataDashboard?.riwayat_transaksi.uang_pangkal.diangsur}
                       </div>
                       <div className="text-xs text-gray-600">Diangsur</div>
                     </div>
@@ -519,7 +355,10 @@ export default function DashboardKeuangan() {
                   <Col xs={24} sm={8}>
                     <div className="text-center">
                       <div className="text-lg font-bold text-red-600">
-                        {dataFix.riwayat_transaksi.uang_pangkal.belum_lunas}
+                        {
+                          dataDashboard?.riwayat_transaksi.uang_pangkal
+                            .belum_lunas
+                        }
                       </div>
                       <div className="text-xs text-gray-600">Belum Lunas</div>
                     </div>
@@ -536,7 +375,7 @@ export default function DashboardKeuangan() {
             <Card title="Detail Tagihan Bulanan">
               <Table
                 columns={monthlyColumns}
-                dataSource={dataFix.tagihan_chart}
+                dataSource={dataDashboard?.tagihan_chart}
                 rowKey="bulan_number"
                 pagination={false}
                 scroll={{ x: 800 }}
